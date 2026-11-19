@@ -3,18 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizzaria Educativa</title>
+    <title>Pizzaria do Saber</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-    <h1>🍕 Pizzaria do Saber</h1>
-    <div class="pedido" id="pedido">Carregando pedido...</div>
-    <div id="pizza">🍕</div>
-    <div id="mensagem"></div>
-    <div class="ingredientes" id="ingredientes"></div>
-    <button id="btn-reiniciar" onclick="iniciarJogo()">Jogar Novamente</button>
+<div class="app">
+    <header class="topbar">
+        <h1>🍕 Pizzaria do Saber</h1>
+        <div class="stats">
+            <span>Dia <b id="dia">1</b></span>
+            <span>Pedido <b id="pedido">1</b></span>
+            <span>Pontos <b id="pontos">0</b></span>
+            <span>Gorjetas <b id="gorjetas">0</b></span>
+        </div>
+    </header>
+
+    <div class="tempo-wrapper"><div id="tempo-bar"></div></div>
+
+    <main>
+        <section class="cliente-area">
+            <div class="cliente">
+                <div class="avatar" id="avatar">🧑</div>
+                <div class="balao" id="balao">Bem-vindo à pizzaria!</div>
+            </div>
+            <div class="ticket">
+                <h2>📋 Comanda</h2>
+                <p id="pergunta">Preparando o pedido...</p>
+                <p class="dica">Escolha o ingrediente que responde à pergunta.</p>
+            </div>
+        </section>
+
+        <section class="cozinha">
+            <div class="etapa" id="etapa">Abrindo a massa...</div>
+            <div class="bancada">
+                <div class="pizza" id="pizza">
+                    <div class="camada massa"></div>
+                    <div class="camada molho"></div>
+                    <div class="camada queijo"></div>
+                    <div class="camada cobertura" id="cobertura"></div>
+                    <div class="camada corte"></div>
+                </div>
+                <div class="forno" id="forno">
+                    <div class="forno-label">🔥 Forno</div>
+                    <div class="medidor">
+                        <div id="forno-agulha"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="mensagem" class="mensagem"></div>
+            <div id="acoes" class="acoes"></div>
+        </section>
+    </main>
+
+    <div id="resultado" class="resultado escondido"></div>
+
+    <div id="inicio" class="overlay">
+        <div class="painel">
+            <h2>🍕 Pizzaria do Saber</h2>
+            <p>Monte pizzas como no Papa's Pizzeria: massa, molho, queijo, ingrediente, forno e corte. Aqui o ingrediente certo é a resposta da pergunta!</p>
+            <button id="btn-comecar" class="botao destaque">Começar expediente</button>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>
