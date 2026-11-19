@@ -1,97 +1,343 @@
-:root {
-    --vermelho: #d32f2f;
-    --amarelo: #fbc02d;
-    --creme: #fdf5e6;
-    --marrom: #5d4037;
-    --verde: #388e3c;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-    background-color: var(--creme);
-    margin: 0; padding: 0;
-    color: var(--marrom);
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 150px 1fr 250px;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header header header"
+    "sidebar mesa comanda";
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  color: #333;
+  overflow: hidden;
 }
 
-.top-bar {
-    background-color: var(--vermelho);
-    color: white;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 30px;
+/* Barra Superior */
+.header {
+  grid-area: header;
+  background: #d9d9d9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-bottom: 3px solid #b0b0b0;
 }
 
-.status span { margin-left: 20px; font-size: 1.2em; }
-
-.game-container {
-    max-width: 800px; margin: 20px auto; padding: 20px;
-    background: white; border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #c0392b;
 }
 
-.counter {
-    display: flex; align-items: center; gap: 20px;
-    margin-bottom: 30px;
-    background: #eee; padding: 20px; border-radius: 15px;
+.saldo {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
 }
 
-.customer-icon { font-size: 4em; }
-
-.speech-bubble {
-    background: white; border: 3px solid var(--marrom);
-    border-radius: 15px; padding: 15px; flex-grow: 1;
-    font-size: 1.2em; position: relative;
-}
-.speech-bubble::before {
-    content: ''; position: absolute; left: -15px; top: 20px;
-    border-width: 10px; border-style: solid;
-    border-color: transparent var(--marrom) transparent transparent;
+.saldo strong {
+  color: #1e7e34;
 }
 
-.estacao { display: none; text-align: center; }
-.estacao.ativa { display: block; animation: fadeIn 0.5s; }
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.btn-acao {
-    background-color: var(--verde); color: white; border: none;
-    padding: 15px 30px; font-size: 1.2em; border-radius: 10px;
-    cursor: pointer; box-shadow: 0 5px #1b5e20; transition: 0.1s;
+/* Coluna Esquerda - Ingredientes */
+.sidebar {
+  grid-area: sidebar;
+  background: #3a3a3a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 10px;
+  overflow-y: auto;
 }
-.btn-acao:active { transform: translateY(5px); box-shadow: none; }
 
-/* Pizza */
-.pizza-container { display: flex; justify-content: center; margin: 20px 0; }
+.btn-ingrediente {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6px;
+  line-height: 1.1;
+  transition: filter 0.2s;
+}
+
+.btn-ingrediente.cor-amarelo {
+  background: #f1c40f;
+  color: #4a3200;
+  box-shadow: 0 6px 0 #b26500;
+}
+
+.btn-ingrediente.cor-vermelho {
+  background: #e74c3c;
+  box-shadow: 0 6px 0 #922b21;
+}
+
+.btn-ingrediente.cor-azul {
+  background: #3498db;
+  box-shadow: 0 6px 0 #1f618d;
+}
+
+.btn-ingrediente.cor-verde {
+  background: #2ecc71;
+  box-shadow: 0 6px 0 #1e8449;
+}
+
+.btn-ingrediente:active {
+  transform: translateY(6px);
+  box-shadow: 0 0 0 transparent;
+}
+
+.btn-ingrediente.correto {
+  background: #2ecc71 !important;
+  color: #fff !important;
+  box-shadow: 0 6px 0 #1e8449 !important;
+}
+
+.btn-ingrediente:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+/* Coluna Central - Mesa */
+.mesa {
+  grid-area: mesa;
+  background-color: #eab676;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(139, 90, 43, 0.08) 0px,
+    rgba(139, 90, 43, 0.08) 20px,
+    transparent 20px,
+    transparent 40px
+  );
+  border: 10px solid #8b5a2b;
+  border-radius: 24px;
+  margin: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  position: relative;
+}
+
+.pizza-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .pizza {
-    width: 200px; height: 200px; border-radius: 50%;
-    background-color: #f9e79f; border: 15px solid #e67e22;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
-    position: relative; transition: background 0.5s;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: #fff3b0;
+  border: 14px solid #b5651d;
+  box-shadow: 0 18px 25px rgba(0, 0, 0, 0.45);
+  position: relative;
+  overflow: hidden;
 }
-.pizza.queimada { background-color: #333; border-color: #222; }
-.pizza.dourada { background-color: #f39c12; }
 
-/* Opções de Ingredientes */
-.opcoes-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
-.opcao-btn {
-    background-color: var(--amarelo); border: 3px solid var(--marrom);
-    padding: 15px 25px; font-size: 1.2em; border-radius: 10px;
-    cursor: pointer; font-weight: bold; transition: 0.2s;
+.cobertura-pizza {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  z-index: 1;
 }
-.opcao-btn:hover { transform: scale(1.05); background-color: var(--vermelho); color: white; }
 
-/* Barra do Forno */
-.barra-container {
-    width: 100%; height: 20px; background: #ddd;
-    border-radius: 10px; margin: 20px 0; overflow: hidden;
+.pizza.dourada {
+  animation: dourar 1.5s forwards;
 }
-.barra-progresso {
-    width: 0%; height: 100%; background: var(--verde);
-    transition: width 0.1s linear, background-color 0.3s;
+
+@keyframes dourar {
+  0% { background: #fff3b0; }
+  100% { background: #e6a100; }
 }
 
 /* Linhas de corte */
-.pizza.cortada::before, .pizza.cortada::after {
-    content: ''; position: absolute; background: white;
+.pizza.cortada::before,
+.pizza.cortada::after {
+  content: "";
+  position: absolute;
+  background: #ffffff;
+  z-index: 2;
 }
-.pizza.cortada::before { width: 2px; height: 100%; left: 50%; top: 0; }
-.pizza.cortada::after { height: 2px; width: 100%; top: 50%; left: 0; }
+
+.pizza.cortada::before {
+  width: 6px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.pizza.cortada::after {
+  height: 6px;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.estacao {
+  display: none;
+  text-align: center;
+}
+
+.estacao.ativa {
+  display: block;
+}
+
+.instrucao-mesa {
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: #4a2c14;
+}
+
+.acoes-forno {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-mesa {
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  padding: 12px 22px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #1e8449;
+  transition: transform 0.1s;
+}
+
+.btn-mesa:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.btn-mesa:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #1e8449;
+}
+
+.btn-mesa:disabled {
+  background: #95a5a6;
+  box-shadow: 0 5px 0 #7f8c8d;
+  cursor: not-allowed;
+}
+
+/* Coluna Direita - Comanda */
+.comanda {
+  grid-area: comanda;
+  background: #ffffff;
+  margin: 16px 16px 16px 0;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  border-left: 5px solid #e91e63;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.comanda h2 {
+  color: #e91e63;
+  font-size: 1.3rem;
+  border-bottom: 2px dashed #f3c1d6;
+  padding-bottom: 8px;
+}
+
+.pergunta-destaque {
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: #222;
+  line-height: 1.4;
+  background: #fff8c6;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.area-timer {
+  margin-top: 6px;
+}
+
+.area-timer.oculto {
+  display: none;
+}
+
+.timer-label {
+  font-size: 0.95rem;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.barra-timer {
+  width: 100%;
+  height: 18px;
+  background: #eee;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progresso-timer {
+  height: 100%;
+  width: 0%;
+  background: #e67e22;
+  transition: width 0.1s linear;
+}
+
+.msg-comanda {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #2c3e50;
+  min-height: 24px;
+}
+
+@media (max-width: 800px) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-areas:
+      "header"
+      "comanda"
+      "mesa"
+      "sidebar";
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  .sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .comanda {
+    margin: 10px 16px;
+  }
+
+  .mesa {
+    min-height: 420px;
+  }
+}
