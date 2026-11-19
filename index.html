@@ -1,66 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduPizzaria</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPizzaria - Estilo Papa's</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="header">
-    <div class="logo">EduPizzaria</div>
-    <div class="saldo">Saldo de Moedas: <strong id="moedas">0</strong></div>
-  </header>
 
-  <aside class="sidebar" id="ingredientes"></aside>
+    <!-- Barra Superior -->
+    <header>
+        <h1>🍕 EduPizzaria</h1>
+        <div class="stats">Moedas: <span id="moedas">0</span></div>
+    </header>
 
-  <main class="mesa" id="mesa">
-    <div class="pizza-area">
-      <div id="pizza" class="pizza">
-        <div id="cobertura-pizza" class="cobertura-pizza"></div>
-      </div>
+    <!-- Layout Principal em 3 Colunas -->
+    <div class="game-layout">
+        
+        <!-- COLUNA ESQUERDA: Botões de Ingredientes -->
+        <div class="sidebar" id="sidebar-ingredientes">
+            <!-- Os botões serão gerados pelo JS -->
+            <p style="color: white; font-size: 12px; text-align: center;">Aguardando<br>pedido...</p>
+        </div>
+
+        <!-- COLUNA CENTRAL: Área de Trabalho (Mesa) -->
+        <div class="workspace">
+            
+            <!-- Tela 1: Pedido -->
+            <div id="estacao-pedido" class="estacao ativa">
+                <h2>Estação 1 - Pedido</h2>
+                <button class="btn-acao" onclick="irParaMontagem()">Anotar Pedido</button>
+            </div>
+
+            <!-- Tela 2: Montagem -->
+            <div id="estacao-montagem" class="estacao">
+                <div class="pizza-area" id="pizza-montagem"></div>
+                <button class="btn-acao" onclick="irParaForno()" id="btn-montagem-feita" style="display:none;">Ir para o Forno</button>
+            </div>
+
+            <!-- Tela 3: Forno -->
+            <div id="estacao-forno" class="estacao">
+                <div class="forno">
+                    <div class="pizza-area" id="pizza-forno"></div>
+                </div>
+                <div class="barra-container">
+                    <div id="barra-forno" class="barra-progresso"></div>
+                </div>
+                <button class="btn-acao" id="btn-forno" onclick="acionarForno()">Colocar no Forno</button>
+            </div>
+
+            <!-- Tela 4: Corte -->
+            <div id="estacao-corte" class="estacao">
+                <div class="pizza-area">
+                    <div class="linha-corte"></div>
+                    <div class="linha-corte horizontal"></div>
+                </div>
+                <button class="btn-acao" onclick="irParaEntrega()">Entregar Pedido</button>
+            </div>
+
+            <!-- Tela 5: Entrega -->
+            <div id="estacao-entrega" class="estacao">
+                <h2>Pedido Entregue!</h2>
+                <button class="btn-acao" onclick="novoCliente()">Próximo Cliente</button>
+            </div>
+
+        </div>
+
+        <!-- COLUNA DIREITA: Comanda (O Pedido) -->
+        <div class="ticket">
+            <h2>Comanda</h2>
+            <div class="ticket-pedido" id="texto-pedido">
+                Carregando pedido...
+            </div>
+            <p style="font-size: 12px; color: #888; margin-top: auto;">Status: <span id="status-ticket">Aguardando...</span></p>
+        </div>
+
     </div>
 
-    <section id="estacao-pedido" class="estacao ativa">
-      <button id="btn-anotar" class="btn-mesa">Anotar Pedido</button>
-    </section>
-
-    <section id="estacao-montagem" class="estacao">
-      <p class="instrucao-mesa">Escolha o ingrediente correto na barra lateral.</p>
-      <button id="btn-ir-forno" class="btn-mesa" disabled>Ir ao Forno</button>
-    </section>
-
-    <section id="estacao-forno" class="estacao">
-      <p class="instrucao-mesa">Asse a pizza no ponto certo!</p>
-      <div class="acoes-forno">
-        <button id="btn-assar" class="btn-mesa">Assar</button>
-        <button id="btn-retirar" class="btn-mesa" disabled>Retirar</button>
-      </div>
-    </section>
-
-    <section id="estacao-corte" class="estacao">
-      <p class="instrucao-mesa">Corte a pizza em fatias.</p>
-      <button id="btn-cortar" class="btn-mesa">Cortar Pizza</button>
-    </section>
-
-    <section id="estacao-entrega" class="estacao">
-      <p class="instrucao-mesa">A pizza está pronta!</p>
-      <button id="btn-entregar" class="btn-mesa">Entregar</button>
-    </section>
-  </main>
-
-  <aside class="comanda" id="comanda">
-    <h2>Comanda</h2>
-    <p id="texto-comanda" class="pergunta-destaque"></p>
-    <div id="area-timer" class="area-timer oculto">
-      <p class="timer-label">Tempo no forno</p>
-      <div class="barra-timer">
-        <div id="progresso-timer" class="progresso-timer"></div>
-      </div>
-    </div>
-    <p id="msg-comanda" class="msg-comanda"></p>
-  </aside>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
