@@ -1,116 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edupizzaria - Papa's Pizzeria Educativo</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPizzaria</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="jogo">
-    <header class="hud">
-      <h1>🍕 Edupizzaria</h1>
-      <div class="placar">
-        <span>Moedas: <strong id="moedas">0</strong></span>
-        <span>Pontos: <strong id="pontos">0</strong></span>
-      </div>
+    <!-- Topo: Informações e Cliente -->
+    <header class="top-bar">
+        <h1>🍕 EduPizzaria</h1>
+        <div class="status">
+            <span>Dia: 1</span>
+            <span>Pedido: 1</span>
+            <span>Moedas: <strong id="moedas">0</strong></span>
+        </div>
     </header>
 
-    <section class="balcao" aria-label="Balcão de atendimento">
-      <div class="cliente-area">
-        <div class="cliente" id="cliente-emoji">👨‍🍳</div>
-        <div class="balao">
-          <p id="fala-cliente">Olá! Estou com fome.</p>
-          <p id="pedido-texto" class="pedido-texto"></p>
-        </div>
-      </div>
-      <div class="status-estacao" id="status-estacao">Estação: Pedido</div>
-    </section>
-
-    <main class="area-trabalho">
-      <section id="estacao-pedido" class="estacao ativa">
-        <h2>Estação 1 - Pedido</h2>
-        <p class="instrucao">Anote o pedido do cliente para começar a preparar a pizza.</p>
-        <button id="btn-anotar" class="btn btn-azul">Anotar Pedido</button>
-      </section>
-
-      <section id="estacao-montagem" class="estacao">
-        <h2>Estação 2 - Montagem</h2>
-        <p class="instrucao">Escolha o ingrediente correto para responder ao pedido.</p>
-        <div class="pizza-container">
-          <div id="pizza" class="pizza">
-            <div id="ingredientes-pizza" class="ingredientes-pizza"></div>
-            <div id="cortes" class="cortes">
-              <span class="linha l1"></span>
-              <span class="linha l2"></span>
-              <span class="linha l3"></span>
-              <span class="linha l4"></span>
+    <main class="game-container">
+        <!-- Balcão do Cliente -->
+        <section class="counter">
+            <div class="customer-icon">👨‍🍳</div>
+            <div class="speech-bubble">
+                <p id="texto-pedido">Carregando...</p>
             </div>
-          </div>
-        </div>
-        <p id="msg-montagem" class="mensagem"></p>
-        <div id="opcoes-ingredientes" class="opcoes"></div>
-      </section>
+        </section>
 
-      <section id="estacao-forno" class="estacao">
-        <h2>Estação 3 - Forno</h2>
-        <p class="instrucao">Asse a pizza e retire no ponto certo (meio da barra).</p>
-        <div class="pizza-container">
-          <div id="pizza-forno" class="pizza">
-            <div id="ingredientes-pizza-forno" class="ingredientes-pizza"></div>
-          </div>
-        </div>
-        <div class="forno-controles">
-          <button id="btn-colocar-forno" class="btn btn-vermelho">Colocar no Forno</button>
-          <div id="area-timer" class="area-timer oculto">
-            <div class="barra-forno">
-              <div id="progresso-forno" class="progresso-forno"></div>
-              <div class="marca-meio"></div>
-            </div>
-            <button id="btn-retirar-forno" class="btn btn-amarelo">Retirar Pizza</button>
-          </div>
-        </div>
-        <p id="msg-forno" class="mensagem"></p>
-      </section>
+        <!-- Estações -->
+        <section id="estacao-pedido" class="estacao ativa">
+            <h2>Estação 1 - Pedido</h2>
+            <p>Anote o pedido do cliente.</p>
+            <button id="btn-anotar" class="btn-acao">Anotar Pedido</button>
+        </section>
 
-      <section id="estacao-corte" class="estacao">
-        <h2>Estação 4 - Corte</h2>
-        <p class="instrucao">Corte a pizza em 8 fatias antes de entregar.</p>
-        <div class="pizza-container">
-          <div id="pizza-corte" class="pizza">
-            <div id="ingredientes-pizza-corte" class="ingredientes-pizza"></div>
-            <div id="cortes-corte" class="cortes">
-              <span class="linha l1"></span>
-              <span class="linha l2"></span>
-              <span class="linha l3"></span>
-              <span class="linha l4"></span>
+        <section id="estacao-montagem" class="estacao">
+            <h2>Estação 2 - Montagem</h2>
+            <div class="pizza-container">
+                <div id="pizza-montagem" class="pizza"></div>
             </div>
-          </div>
-        </div>
-        <button id="btn-cortar" class="btn btn-azul">Cortar Pizza</button>
-        <p id="msg-corte" class="mensagem"></p>
-      </section>
+            <p>Escolha a resposta correta:</p>
+            <div id="opcoes-ingredientes" class="opcoes-container"></div>
+        </section>
 
-      <section id="estacao-entrega" class="estacao">
-        <h2>Estação 5 - Entrega</h2>
-        <p class="instrucao">Entregue a pizza e veja a avaliação do cliente.</p>
-        <div class="pizza-container">
-          <div id="pizza-entrega" class="pizza">
-            <div id="ingredientes-pizza-entrega" class="ingredientes-pizza"></div>
-            <div id="cortes-entrega" class="cortes visivel">
-              <span class="linha l1"></span>
-              <span class="linha l2"></span>
-              <span class="linha l3"></span>
-              <span class="linha l4"></span>
+        <section id="estacao-forno" class="estacao">
+            <h2>Estação 3 - Forno</h2>
+            <div class="pizza-container">
+                <div id="pizza-forno" class="pizza"></div>
             </div>
-          </div>
-        </div>
-        <p id="msg-entrega" class="mensagem destaque"></p>
-        <button id="btn-entregar" class="btn btn-verde">Entregar</button>
-      </section>
+            <p>Asse a pizza no ponto certo!</p>
+            <div class="barra-container">
+                <div id="barra-forno" class="barra-progresso"></div>
+            </div>
+            <button id="btn-assar" class="btn-acao">Colocar no Forno</button>
+        </section>
+
+        <section id="estacao-corte" class="estacao">
+            <h2>Estação 4 - Corte</h2>
+            <div class="pizza-container">
+                <div id="pizza-corte" class="pizza"></div>
+            </div>
+            <button id="btn-cortar" class="btn-acao">Cortar Pizza</button>
+        </section>
+        
+        <section id="estacao-entrega" class="estacao">
+            <h2>Estação 5 - Entrega</h2>
+            <p>O cliente está esperando!</p>
+            <button id="btn-entregar" class="btn-acao">Entregar Pedido</button>
+        </section>
     </main>
-  </div>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
