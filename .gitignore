@@ -1,0 +1,17 @@
+# Dependências
+node_modules/
+
+# Builds e saídas
+dist/
+build/
+
+# Logs e variáveis de ambiente
+npm-debug.log*
+*.log
+.env
+.env.*
+
+# Arquivos do sistema e editores
+.DS_Store
+.vscode/
+.idea/
