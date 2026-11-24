@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPizzaria - Estilo Papa's</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="tela-inicial" class="tela-inicial">
+        <div class="logo-inicial">
+            <span class="logo-pizza">🍕</span>
+            <h1>EduPizzaria</h1>
+            <p>Matemática, Português e muito sabor!</p>
+        </div>
+        <div class="menu-inicial">
+            <button id="btn-start">Start Game</button>
+            <button id="btn-help">Help</button>
+            <button id="btn-credits">Credits</button>
+        </div>
+        <div class="mesa-inicial"></div>
+    </div>
+
+    <div id="modal-info" class="modal-info escondido">
+        <div class="modal-cartao">
+            <h2 id="modal-titulo"></h2>
+            <p id="modal-texto"></p>
+            <button id="btn-fechar-modal" class="btn-modal">Fechar</button>
+        </div>
+    </div>
+
+    <div id="jogo" class="jogo escondido">
+        <header>
+            <h1>🍕 EduPizzaria</h1>
+            <div class="placar">
+                <span class="stat">Moedas: <b id="moedas">0</b></span>
+                <span class="stat">Pontos: <b id="pontos">0</b></span>
+            </div>
+            <button id="btn-menu" class="btn-pequeno">Menu</button>
+        </header>
+
+        <main id="lobby" class="cena ativa">
+            <div class="parede">
+                <div class="janela">
+                    <div class="janela-cu"></div>
+                    <div class="janela-monte"></div>
+                </div>
+                <div class="cartaz">Pizzaria da Vila</div>
+            </div>
+            <div class="chao"></div>
+            <div class="balcao"></div>
+            <div class="chef">🧑‍🍳</div>
+            <button id="btn-open" class="placa-open">OPEN</button>
+            <div class="area-fila">
+                <p class="fila-titulo">Clientes na fila</p>
+                <div id="fila-clientes" class="fila-clientes"></div>
+            </div>
+            <p id="mensagem-lobby" class="mensagem-lobby">Clique em OPEN para abrir a pizzaria!</p>
+        </main>
+
+        <main id="cozinha" class="cozinha escondido">
+            <aside id="sidebar-ingredientes" class="sidebar"></aside>
+
+            <section class="workspace">
+                <div id="estacao-montagem" class="estacao ativa">
+                    <div id="comanda-montagem" class="comanda-topo"></div>
+                    <div class="bancada">
+                        <div id="pizza-montagem" class="pizza-area"></div>
+                    </div>
+                    <button id="btn-montagem-feita" class="btn-acao" disabled>Ir para o Forno</button>
+                </div>
+
+                <div id="estacao-forno" class="estacao">
+                    <h2>Forno</h2>
+                    <div class="forno">
+                        <div id="pizza-forno" class="pizza-area"></div>
+                    </div>
+                    <div class="barra-container">
+                        <div id="barra-forno" class="barra-progresso"></div>
+                    </div>
+                    <button id="btn-forno" class="btn-acao">Colocar no Forno</button>
+                </div>
+
+                <div id="estacao-corte" class="estacao">
+                    <h2>Hora de cortar!</h2>
+                    <div id="pizza-corte" class="pizza-area">
+                        <div class="linha-corte"></div>
+                        <div class="linha-corte horizontal"></div>
+                    </div>
+                    <button id="btn-corte" class="btn-acao">Entregar Pedido</button>
+                </div>
+
+                <div id="estacao-entrega" class="estacao">
+                    <div class="cartao-entrega">
+                        <h2>Desafio do cliente!</h2>
+                        <p id="pergunta-entrega"></p>
+                        <div id="opcoes-entrega" class="opcoes-entrega"></div>
+                        <p id="resultado-entrega"></p>
+                        <button id="btn-proximo" class="btn-acao" disabled>Voltar ao Balcão</button>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="ticket">
+                <h2>Comanda</h2>
+                <div id="texto-pedido" class="ticket-pedido">Clique em um cliente na fila.</div>
+                <div id="progresso-pedido" class="progresso-pedido"></div>
+                <p class="ticket-status">Status: <span id="status-ticket">Aguardando...</span></p>
+            </aside>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
