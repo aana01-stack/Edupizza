@@ -7,107 +7,94 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- TELA INICIAL -->
     <div id="tela-inicial" class="tela-inicial">
         <div class="logo-inicial">
-            <span class="logo-pizza">🍕</span>
             <h1>EduPizzaria</h1>
-            <p>Matemática, Português e muito sabor!</p>
+            <p>Aprender nunca foi tão saboroso!</p>
         </div>
         <div class="menu-inicial">
-            <button id="btn-start">Start Game</button>
-            <button id="btn-help">Help</button>
-            <button id="btn-credits">Credits</button>
-        </div>
-        <div class="mesa-inicial"></div>
-    </div>
-
-    <div id="modal-info" class="modal-info escondido">
-        <div class="modal-cartao">
-            <h2 id="modal-titulo"></h2>
-            <p id="modal-texto"></p>
-            <button id="btn-fechar-modal" class="btn-modal">Fechar</button>
+            <button onclick="iniciarJogo()">Start Game</button>
+            <button>Help</button>
+            <button>Credits</button>
         </div>
     </div>
 
-    <div id="jogo" class="jogo escondido">
+    <!-- JOGO PRINCIPAL (Invisível no início) -->
+    <div id="jogo-principal" class="jogo-principal" style="display: none;">
+        
+        <!-- Barra Superior -->
         <header>
             <h1>🍕 EduPizzaria</h1>
-            <div class="placar">
-                <span class="stat">Moedas: <b id="moedas">0</b></span>
-                <span class="stat">Pontos: <b id="pontos">0</b></span>
-            </div>
-            <button id="btn-menu" class="btn-pequeno">Menu</button>
+            <div class="stats">Moedas: <span id="moedas">0</span></div>
         </header>
 
-        <main id="lobby" class="cena ativa">
-            <div class="parede">
-                <div class="janela">
-                    <div class="janela-cu"></div>
-                    <div class="janela-monte"></div>
-                </div>
-                <div class="cartaz">Pizzaria da Vila</div>
+        <!-- Layout Principal em 3 Colunas -->
+        <div class="game-layout">
+            
+            <!-- COLUNA ESQUERDA: Botões de Ingredientes -->
+            <div class="sidebar" id="sidebar-ingredientes">
+                <!-- Preenchido via JS -->
             </div>
-            <div class="chao"></div>
-            <div class="balcao"></div>
-            <div class="chef">🧑‍🍳</div>
-            <button id="btn-open" class="placa-open">OPEN</button>
-            <div class="area-fila">
-                <p class="fila-titulo">Clientes na fila</p>
-                <div id="fila-clientes" class="fila-clientes"></div>
-            </div>
-            <p id="mensagem-lobby" class="mensagem-lobby">Clique em OPEN para abrir a pizzaria!</p>
-        </main>
 
-        <main id="cozinha" class="cozinha escondido">
-            <aside id="sidebar-ingredientes" class="sidebar"></aside>
-
-            <section class="workspace">
-                <div id="estacao-montagem" class="estacao ativa">
-                    <div id="comanda-montagem" class="comanda-topo"></div>
-                    <div class="bancada">
-                        <div id="pizza-montagem" class="pizza-area"></div>
+            <!-- COLUNA CENTRAL: Área de Trabalho -->
+            <div class="workspace">
+                
+                <!-- Tela 1: Pedido (Lobby) -->
+                <div id="estacao-pedido" class="estacao ativa">
+                    <div class="lobby">
+                        <div class="fila-clientes" id="fila-clientes">
+                            <!-- Clientes aparecem aqui -->
+                        </div>
+                        <div class="balcao-atendimento">
+                            <button id="btn-open" class="btn-open" onclick="abrirPizzaria()">OPEN</button>
+                            <div class="comanda-fisica" id="comanda-fisica" onclick="pegarComanda()" style="display: none;">
+                                <p>PEDIDO</p>
+                                <p style="font-size: 10px; color: #888;">Clique para pegar</p>
+                            </div>
+                        </div>
                     </div>
-                    <button id="btn-montagem-feita" class="btn-acao" disabled>Ir para o Forno</button>
                 </div>
 
+                <!-- Tela 2: Montagem -->
+                <div id="estacao-montagem" class="estacao">
+                    <div class="pizza-area" id="pizza-montagem"></div>
+                    <button class="btn-acao" onclick="irParaForno()" id="btn-montagem-feita" style="display:none;">Ir para o Forno</button>
+                </div>
+
+                <!-- Tela 3: Forno -->
                 <div id="estacao-forno" class="estacao">
-                    <h2>Forno</h2>
                     <div class="forno">
-                        <div id="pizza-forno" class="pizza-area"></div>
+                        <div class="pizza-area" id="pizza-forno"></div>
                     </div>
                     <div class="barra-container">
                         <div id="barra-forno" class="barra-progresso"></div>
                     </div>
-                    <button id="btn-forno" class="btn-acao">Colocar no Forno</button>
+                    <button class="btn-acao" id="btn-forno" onclick="acionarForno()">Colocar no Forno</button>
                 </div>
 
+                <!-- Tela 4: Corte -->
                 <div id="estacao-corte" class="estacao">
-                    <h2>Hora de cortar!</h2>
-                    <div id="pizza-corte" class="pizza-area">
+                    <div class="pizza-area">
                         <div class="linha-corte"></div>
                         <div class="linha-corte horizontal"></div>
                     </div>
-                    <button id="btn-corte" class="btn-acao">Entregar Pedido</button>
+                    <button class="btn-acao" onclick="entregarPizza()">Entregar Pedido</button>
                 </div>
 
-                <div id="estacao-entrega" class="estacao">
-                    <div class="cartao-entrega">
-                        <h2>Desafio do cliente!</h2>
-                        <p id="pergunta-entrega"></p>
-                        <div id="opcoes-entrega" class="opcoes-entrega"></div>
-                        <p id="resultado-entrega"></p>
-                        <button id="btn-proximo" class="btn-acao" disabled>Voltar ao Balcão</button>
-                    </div>
-                </div>
-            </section>
+            </div>
 
-            <aside class="ticket">
+            <!-- COLUNA DIREITA: Comanda -->
+            <div class="ticket">
                 <h2>Comanda</h2>
-                <div id="texto-pedido" class="ticket-pedido">Clique em um cliente na fila.</div>
-                <div id="progresso-pedido" class="progresso-pedido"></div>
-                <p class="ticket-status">Status: <span id="status-ticket">Aguardando...</span></p>
-            </aside>
-        </main>
+                <div class="ticket-pedido" id="texto-pedido">
+                    Aguardando...
+                </div>
+                <p style="font-size: 12px; color: #888; margin-top: auto;">Status: <span id="status-ticket">Aguardando...</span></p>
+            </div>
+
+        </div>
     </div>
 
     <script src="script.js"></script>
