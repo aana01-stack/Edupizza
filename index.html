@@ -5,91 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduPizzaria - Estilo Papa's</title>
     <style>
-        /* ================= RESET E ESTRUTURA ================= */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; user-select: none; }
-        body { background-color: #333; height: 100vh; overflow: hidden; }
+        /* ================= GERAL ================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Comic Sans MS', cursive, sans-serif; user-select: none; }
+        body { background-color: #333; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
         /* ================= TELA INICIAL ================= */
         .tela-inicial {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background-color: #4CAF50;
-            background-image: linear-gradient(45deg, #388E3C 25%, transparent 25%, transparent 75%, #388E3C 75%, #388E3C), linear-gradient(45deg, #388E3C 25%, transparent 25%, transparent 75%, #388E3C 75%, #388E3C);
-            background-size: 100px 100px; background-position: 0 0, 50px 50px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.5s;
+            background-color: #4CAF50; background-image: linear-gradient(45deg, #388E3C 25%, transparent 25%, transparent 75%, #388E3C 75%, #388E3C), linear-gradient(45deg, #388E3C 25%, transparent 25%, transparent 75%, #388E3C 75%, #388E3C);
+            background-size: 80px 80px; background-position: 0 0, 40px 40px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s;
         }
         .tela-inicial.escondida { opacity: 0; pointer-events: none; }
-        .logo-inicial { text-align: center; margin-bottom: 50px; }
-        .logo-inicial h1 { font-size: 70px; color: #d32f2f; text-shadow: 4px 4px 0 #fff, 6px 6px 0 #000; background: white; padding: 20px 40px; border-radius: 50%; border: 8px solid #d32f2f; transform: rotate(-5deg); display: inline-block; }
-        .logo-inicial p { color: white; font-size: 20px; text-shadow: 2px 2px 0 #000; margin-top: 15px; font-weight: bold; }
-        
-        .menu-inicial { display: flex; flex-direction: column; gap: 15px; }
-        .menu-inicial button { background: #ffca28; color: #5d4037; font-size: 22px; font-weight: bold; padding: 15px 60px; border: 4px solid #ff8f00; border-radius: 50px; box-shadow: 0 6px 0 #b26500; cursor: pointer; transition: 0.1s; }
+        .logo-inicial h1 { font-size: 60px; color: #d32f2f; text-shadow: 4px 4px 0 #fff, 6px 6px 0 #000; background: white; padding: 20px 40px; border-radius: 50%; border: 8px solid #d32f2f; transform: rotate(-5deg); display: inline-block; }
+        .logo-inicial p { color: white; font-size: 18px; text-shadow: 2px 2px 0 #000; margin-top: 15px; font-weight: bold; text-align: center; }
+        .menu-inicial { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
+        .menu-inicial button { background: #ffca28; color: #5d4037; font-size: 20px; font-weight: bold; padding: 12px 50px; border: 4px solid #ff8f00; border-radius: 50px; box-shadow: 0 6px 0 #b26500; cursor: pointer; transition: 0.1s; }
         .menu-inicial button:active { transform: translateY(6px); box-shadow: none; }
 
-        /* ================= JOGO PRINCIPAL ================= */
+        /* ================= ESTRUTURA DO JOGO ================= */
         .jogo-principal { display: flex; flex-direction: column; height: 100vh; }
-        header { background: #e0e0e0; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 5px solid #a0a0a0; }
+        header { background: #e0e0e0; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 5px solid #a0a0a0; z-index: 10; }
         header h1 { color: #d32f2f; font-size: 24px; }
         .stats { background: #fff; padding: 5px 15px; border-radius: 20px; font-weight: bold; border: 2px solid #ccc; }
 
-        .game-layout { display: grid; grid-template-columns: 140px 1fr 250px; height: calc(100vh - 60px); gap: 10px; padding: 10px; background: #222; }
-        
-        /* ================= BARRA LATERAL (INGREDIENTES) ================= */
+        .game-layout { display: grid; grid-template-columns: 130px 1fr 260px; height: calc(100vh - 60px); gap: 10px; padding: 10px; background: #222; }
+
+        /* ================= BARRA LATERAL ESQUERDA (INGREDIENTES) ================= */
         .sidebar { background: #444; border-radius: 10px; padding: 15px 10px; display: flex; flex-direction: column; gap: 15px; align-items: center; overflow-y: auto; }
-        .btn-ingrediente { width: 90px; height: 90px; border-radius: 50%; background: #ffca28; border: 4px solid #ff8f00; box-shadow: 0 6px 0 #b26500; cursor: pointer; font-size: 18px; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: 0.1s; color: #333; text-align: center; padding: 5px; }
-        .btn-ingrediente:active { transform: translateY(6px); box-shadow: 0 0 0 #b26500; }
+        .btn-ingrediente { width: 80px; height: 80px; border-radius: 50%; background: #ffca28; border: 4px solid #ff8f00; box-shadow: 0 6px 0 #b26500; cursor: pointer; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: 0.1s; color: #333; text-align: center; padding: 5px; }
+        .btn-ingrediente:active { transform: translateY(6px); box-shadow: none; }
         .btn-ingrediente:disabled { background: #888; border-color: #666; box-shadow: 0 6px 0 #444; cursor: not-allowed; }
 
-        /* ================= ÁREA CENTRAL (MESA/LOBBY) ================= */
-        .workspace { background: #eab676; background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 20px, transparent 20px, transparent 40px); border-radius: 15px; display: flex; justify-content: center; align-items: center; position: relative; border: 8px solid #555; overflow: hidden; }
-        .estacao { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; }
+        /* ================= ÁREA CENTRAL (CENÁRIO) ================= */
+        .workspace { border-radius: 15px; display: flex; justify-content: center; align-items: center; position: relative; border: 8px solid #555; overflow: hidden; }
+        .estacao { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; position: relative; }
         .estacao.ativa { display: flex; }
 
-        /* ================= ESTAÇÃO 1: LOBBY ================= */
-        .lobby { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
+        /* ================= ESTAÇÃO 1 (LOBBY) ================= */
+        .lobby { width: 100%; height: 100%; display: flex; flex-direction: column; position: relative; background-color: #8FBC8F; } /* Parede verde */
         
-        /* Parede com comandas */
-        .parede { position: absolute; top: 0; left: 0; width: 100%; height: 60%; background: #8FBC8F; border-bottom: 5px solid #2E8B57; display: flex; justify-content: center; gap: 20px; padding-top: 20px; }
-        .comanda-parede { width: 40px; height: 70px; background: white; border: 1px solid #ccc; border-top: 5px solid #d32f2f; position: relative; }
-        .comanda-parede::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 20px; background: repeating-linear-gradient(0deg, transparent, transparent 5px, #ccc 5px, #ccc 6px); }
+        /* As comandas na parede */
+        .parede-comandas { position: absolute; top: 10px; left: 0; width: 100%; height: 100px; display: flex; justify-content: center; gap: 30px; }
+        .comanda-parede { width: 30px; height: 60px; background: white; border: 1px solid #ccc; border-top: 4px solid #d32f2f; }
+        
+        /* Chão xadrez */
+        .chao { position: absolute; bottom: 100px; left: 0; width: 100%; height: 150px; background-image: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%); background-size: 40px 40px; background-position: 0 0, 0 20px, 20px -20px, -20px 0px; background-color: #a9a9a9; }
 
-        /* Fila de Clientes (Bonequinhos CSS) */
-        .fila-clientes { position: relative; z-index: 2; flex-grow: 1; display: flex; justify-content: center; align-items: flex-end; gap: 10px; padding-bottom: 80px; }
-        .cliente { width: 60px; height: 120px; position: relative; cursor: pointer; transition: transform 0.2s; }
-        .cliente:hover { transform: scale(1.1); }
-        .cliente-cabeca { width: 40px; height: 40px; background-color: #f1c27d; border-radius: 50%; position: absolute; top: 0; left: 10px; border: 2px solid #8d5524; }
-        .cliente-corpo { width: 60px; height: 70px; background-color: #d32f2f; position: absolute; bottom: 0; left: 0; border-radius: 10px 10px 0 0; }
-        .cliente-pernas { width: 40px; height: 20px; background-color: #333; position: absolute; bottom: -20px; left: 10px; border-radius: 5px; }
+        /* Personagens */
+        .personagem { position: absolute; bottom: 100px; width: 60px; height: 120px; z-index: 2; }
+        .cabeca { width: 40px; height: 40px; background: #f1c27d; border-radius: 50%; position: absolute; top: 0; left: 10px; border: 2px solid #8d5524; }
+        .corpo { width: 60px; height: 60px; position: absolute; bottom: 0; left: 0; border-radius: 10px 10px 0 0; }
+        .bone { width: 50px; height: 20px; background: #1976d2; position: absolute; top: -10px; left: 5px; border-radius: 10px 10px 0 0; border: 2px solid #0d47a1; }
+        
+        /* O jogador (Pizzaiolo) */
+        .jogador { left: 20px; bottom: 80px; z-index: 5; }
+        .jogador .corpo { background: #d32f2f; width: 50px; left: 5px; height: 50px; }
+        .jogador .cabeca { left: 10px; }
+        .jogador .bone { left: 10px; }
+
+        /* O Cliente */
+        .cliente { left: 50%; transform: translateX(-50%); bottom: 100px; display: none; /* Escondido até clicar no OPEN */ cursor: pointer; }
+        .cliente .corpo { background: #fbc02d; }
+        .cliente .cabeca { border-radius: 50%; }
 
         /* Balcão */
-        .balcao-atendimento { position: absolute; bottom: 0; width: 100%; height: 100px; background: #5d4037; border-top: 10px solid #3e2723; border-radius: 10px 10px 0 0; display: flex; justify-content: center; align-items: center; z-index: 3; }
-        
-        /* Botão OPEN no meio */
+        .balcao { position: absolute; bottom: 0; width: 100%; height: 100px; background: #5d4037; border-top: 10px solid #3e2723; z-index: 10; display: flex; justify-content: center; align-items: center; }
+
+        /* Botão OPEN no centro do balcão */
         .btn-open { background: #4CAF50; color: white; font-size: 24px; font-weight: bold; padding: 15px 40px; border: 4px solid #2E7D32; border-radius: 10px; cursor: pointer; box-shadow: 0 6px 0 #1b5e20; text-transform: uppercase; letter-spacing: 2px; transition: 0.1s; }
         .btn-open:active { transform: translateY(6px); box-shadow: none; }
 
-        /* Comanda Física no Balcão */
-        .comanda-fisica { width: 80px; height: 100px; background: white; border-left: 5px solid #d32f2f; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer; animation: flutuar 2s infinite ease-in-out; display: flex; justify-content: center; align-items: center; }
+        /* A comanda física que aparece no balcão */
+        .comanda-fisica { display: none; width: 80px; height: 100px; background: white; border-left: 5px solid #d32f2f; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer; animation: flutuar 2s infinite ease-in-out; z-index: 15; justify-content: center; align-items: center; }
         .comanda-fisica:hover { transform: translateX(-50%) scale(1.1); }
         @keyframes flutuar { 0%, 100% { top: -50px; } 50% { top: -60px; } }
 
-        /* ================= ESTAÇÕES DE MONTAGEM/FORNO ================= */
-        .pizza-area { width: 250px; height: 250px; background-color: #f9e79f; border-radius: 50%; box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 12px solid #e67e22; position: relative; display: flex; justify-content: center; align-items: center; transition: 0.5s; }
-        .pizza-area.dourada { background-color: #f39c12; }
-        .pizza-area.queimada { background-color: #333; border-color: #111; }
-        .forno { width: 350px; height: 350px; background: #555; border-radius: 20px; display: flex; justify-content: center; align-items: center; border: 15px solid #333; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+        /* ================= ESTAÇÕES DE COZINHA ================= */
+        .pizza-area { width: 250px; height: 250px; background-color: #f9e79f; border-radius: 50%; box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 12px solid #e67e22; position: relative; display: flex; justify-content: center; align-items: center; transition: 0.5s; background-image: radial-gradient(circle, #f9e79f 60%, #f39c12 100%); }
+        .pizza-area.dourada { background-image: radial-gradient(circle, #f39c12 60%, #d35400 100%); }
+        .pizza-area.queimada { background-image: radial-gradient(circle, #333 60%, #111 100%); border-color: #111; }
+        .forno { width: 350px; height: 350px; background: #555; border-radius: 20px; display: flex; justify-content: center; align-items: center; border: 15px solid #333; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); background-image: repeating-linear-gradient(0deg, #444 0px, #444 20px, #333 20px, #333 40px); }
         .linha-corte { position: absolute; background: rgba(255,255,255,0.8); height: 100%; width: 4px; top: 0; left: 50%; transform: translateX(-50%); }
         .linha-corte.horizontal { width: 100%; height: 4px; top: 50%; left: 0; transform: translateY(-50%); }
-        
-        .btn-acao { background: #4CAF50; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; box-shadow: 0 5px 0 #2E7D32; cursor: pointer; margin-top: 20px; font-weight: bold; transition: 0.1s; }
+        .btn-acao { background: #4CAF50; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; box-shadow: 0 5px 0 #2E7D32; cursor: pointer; margin-top: 20px; font-weight: bold; transition: 0.1s; z-index: 20; }
         .btn-acao:active { transform: translateY(5px); box-shadow: none; }
         .btn-acao:disabled { background: #888; box-shadow: 0 5px 0 #555; cursor: not-allowed; }
-
-        .barra-container { width: 80%; height: 25px; background: #ddd; border-radius: 15px; margin-top: 20px; overflow: hidden; border: 2px solid #aaa; }
+        .barra-container { width: 80%; height: 25px; background: #ddd; border-radius: 15px; margin-top: 20px; overflow: hidden; border: 2px solid #aaa; z-index: 20; }
         .barra-progresso { width: 0%; height: 100%; background: #4CAF50; transition: width 0.1s linear, background-color 0.3s; }
 
-        /* ================= COMANDA DIREITA ================= */
+        /* ================= COMANDA (DIREITA) ================= */
         .ticket { background: #fff; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; border-left: 8px solid #e91e63; box-shadow: -5px 5px 15px rgba(0,0,0,0.3); }
         .ticket h2 { font-size: 20px; color: #333; margin-bottom: 15px; border-bottom: 2px dashed #ccc; padding-bottom: 10px; }
         .ticket-pedido { font-size: 18px; color: #d32f2f; font-weight: bold; line-height: 1.4; }
@@ -113,7 +118,7 @@
     <!-- JOGO PRINCIPAL -->
     <div id="jogo-principal" class="jogo-principal" style="display: none;">
         <header>
-            <h1>🍕 EduPizzaria</h1>
+            <h1>EduPizzaria</h1>
             <div class="stats">Moedas: <span id="moedas">0</span></div>
         </header>
 
@@ -124,15 +129,29 @@
                 <!-- Tela 1: Pedido (Lobby) -->
                 <div id="estacao-pedido" class="estacao ativa">
                     <div class="lobby">
-                        <div class="parede">
+                        <div class="parede-comandas">
                             <div class="comanda-parede"></div>
                             <div class="comanda-parede"></div>
                             <div class="comanda-parede"></div>
                         </div>
-                        <div class="fila-clientes" id="fila-clientes"></div>
-                        <div class="balcao-atendimento">
+                        <div class="chao"></div>
+                        
+                        <!-- Jogador -->
+                        <div class="personagem jogador">
+                            <div class="bone"></div>
+                            <div class="cabeca"></div>
+                            <div class="corpo"></div>
+                        </div>
+                        
+                        <!-- Cliente (Escondido até clicar no OPEN) -->
+                        <div class="personagem cliente" id="cliente-na-fila" onclick="atenderCliente()">
+                            <div class="cabeca"></div>
+                            <div class="corpo"></div>
+                        </div>
+
+                        <div class="balcao">
                             <button id="btn-open" class="btn-open" onclick="abrirPizzaria()">OPEN</button>
-                            <div class="comanda-fisica" id="comanda-fisica" onclick="pegarComanda()" style="display: none;">
+                            <div class="comanda-fisica" id="comanda-fisica" onclick="pegarComanda()">
                                 <span style="font-weight: bold; color: #d32f2f;">PEDIDO</span>
                             </div>
                         </div>
@@ -196,9 +215,9 @@
             barraForno: document.getElementById('barra-forno'),
             btnForno: document.getElementById('btn-forno'),
             statusTicket: document.getElementById('status-ticket'),
-            filaClientes: document.getElementById('fila-clientes'),
             btnOpen: document.getElementById('btn-open'),
-            comandaFisica: document.getElementById('comanda-fisica')
+            comandaFisica: document.getElementById('comanda-fisica'),
+            clienteNaFila: document.getElementById('cliente-na-fila')
         };
 
         function iniciarJogo() {
@@ -206,31 +225,11 @@
             document.getElementById('jogo-principal').style.display = 'flex';
         }
 
-        // Abre a pizzaria e gera os clientes de CSS
         function abrirPizzaria() {
             if (pizzariaAberta) return;
             pizzariaAberta = true;
             ui.btnOpen.style.display = 'none';
-            
-            const coresRoupas = ['#d32f2f', '#1976d2', '#388e3c', '#fbc02d'];
-            const coresCabelos = ['#4e342e', '#fbc02d', '#8d5524', '#000000'];
-
-            for (let i = 0; i < 3; i++) {
-                setTimeout(() => {
-                    const cliente = document.createElement('div');
-                    cliente.className = 'cliente';
-                    
-                    // Monta o bonequinho com CSS
-                    cliente.innerHTML = `
-                        <div class="cliente-cabeca" style="background-color: ${coresCabelos[i]};"></div>
-                        <div class="cliente-corpo" style="background-color: ${coresRoupas[i]};"></div>
-                        <div class="cliente-pernas"></div>
-                    `;
-                    
-                    cliente.onclick = () => atenderCliente();
-                    ui.filaClientes.appendChild(cliente);
-                }, i * 500);
-            }
+            ui.clienteNaFila.style.display = 'block'; // Mostra o cliente
         }
 
         function atenderCliente() {
@@ -240,9 +239,9 @@
             ui.textoPedido.innerText = `Quero uma pizza com a resposta para: ${perguntaAtual.pergunta}`;
             ui.statusTicket.innerText = "Aguardando...";
             
-            // Mostra a comanda física no balcão
+            // Esconde o cliente e mostra a comanda
+            ui.clienteNaFila.style.display = 'none';
             ui.comandaFisica.style.display = 'flex';
-            ui.filaClientes.innerHTML = ''; // Limpa a fila
         }
 
         function pegarComanda() {
@@ -266,7 +265,18 @@
             if (opcao === perguntaAtual.correta) {
                 btn.style.backgroundColor = '#4CAF50';
                 btn.style.color = 'white';
-                ui.pizzaMontagem.innerHTML = '<span style="font-size: 100px;">🍕</span>'; // Pode trocar por CSS de pizza
+                
+                // Adiciona uma bolinha na pizza representando o ingrediente
+                const bolinha = document.createElement('div');
+                bolinha.style.width = '30px';
+                bolinha.style.height = '30px';
+                bolinha.style.backgroundColor = '#d32f2f';
+                bolinha.style.borderRadius = '50%';
+                bolinha.style.position = 'absolute';
+                bolinha.style.top = Math.random() * 150 + 'px';
+                bolinha.style.left = Math.random() * 150 + 'px';
+                ui.pizzaMontagem.appendChild(bolinha);
+
                 document.querySelectorAll('.btn-ingrediente').forEach(b => b.disabled = true);
                 document.getElementById('btn-montagem-feita').style.display = 'block';
             } else {
@@ -316,8 +326,12 @@
             ui.btnForno.innerText = "Colocar no Forno";
             ui.pizzaForno.className = 'pizza-area';
             ui.barraForno.style.width = '0%';
-            ui.pizzaMontagem.innerHTML = '';
-            setTimeout(() => { mudarEstacao('estacao-pedido'); }, 2000);
+            ui.pizzaMontagem.innerHTML = ''; // Limpa as bolinhas da pizza
+            
+            // Volta para o lobby
+            setTimeout(() => { 
+                mudarEstacao('estacao-pedido'); 
+            }, 2000);
         }
 
         function mudarEstacao(id) {
