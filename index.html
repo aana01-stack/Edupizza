@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduPizzaria - Estilo Papa's</title>
     <style>
-        /* ================= CSS ================= */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Comic Sans MS', cursive, sans-serif; }
         body { background-color: #333; height: 100vh; overflow: hidden; }
 
-        /* TELA INICIAL */
+        /* --- TELA INICIAL --- */
         .tela-inicial {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background-color: #4CAF50;
@@ -25,7 +24,7 @@
         .menu-inicial button { background: #ffca28; color: #5d4037; font-size: 24px; font-weight: bold; padding: 15px 50px; border: 4px solid #ff8f00; border-radius: 50px; box-shadow: 0 6px 0 #b26500; cursor: pointer; transition: 0.1s; }
         .menu-inicial button:active { transform: translateY(6px); box-shadow: none; }
 
-        /* JOGO PRINCIPAL */
+        /* --- JOGO PRINCIPAL --- */
         .jogo-principal { display: flex; flex-direction: column; height: 100vh; }
         header { background: #e0e0e0; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 5px solid #a0a0a0; }
         header h1 { color: #d32f2f; font-size: 24px; }
@@ -37,6 +36,7 @@
         .btn-ingrediente:active { transform: translateY(6px); box-shadow: 0 0 0 #b26500; }
         .btn-ingrediente:disabled { background: #888; border-color: #666; box-shadow: 0 6px 0 #444; cursor: not-allowed; }
 
+        /* Área Central */
         .workspace { background: #eab676; background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 20px, transparent 20px, transparent 40px); border-radius: 15px; display: flex; justify-content: center; align-items: center; position: relative; border: 8px solid #555; overflow: hidden; }
         .estacao { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; }
         .estacao.ativa { display: flex; }
@@ -44,10 +44,23 @@
         /* Estação 1 (Lobby) */
         .lobby { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
         .fila-clientes { flex-grow: 1; display: flex; justify-content: center; align-items: flex-end; gap: 20px; padding-bottom: 20px; }
-        .balcao-atendimento { background: #8B4513; width: 100%; height: 120px; border-top: 10px solid #5d2e0c; border-radius: 20px 20px 0 0; display: flex; justify-content: center; align-items: flex-start; box-shadow: inset 0 10px 20px rgba(0,0,0,0.3); position: relative; }
-        .btn-open { position: absolute; bottom: 20px; right: 20px; background: #4CAF50; color: white; font-size: 24px; font-weight: bold; padding: 10px 20px; border: 4px solid #2E7D32; border-radius: 10px; cursor: pointer; box-shadow: 0 5px 0 #1b5e20; }
-        .btn-open:active { transform: translateY(5px); box-shadow: none; }
-        .comanda-fisica { background: #fff; width: 80px; height: 100px; position: relative; top: -40px; border-radius: 5px; box-shadow: 0 5px 10px rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; border-left: 4px solid #d32f2f; transition: transform 0.2s; animation: flutuar 2s infinite ease-in-out; }
+        
+        /* Balcão de Atendimento */
+        .balcao-atendimento { background: #8B4513; width: 100%; height: 120px; border-top: 10px solid #5d2e0c; border-radius: 20px 20px 0 0; display: flex; justify-content: center; align-items: center; box-shadow: inset 0 10px 20px rgba(0,0,0,0.3); position: relative; }
+        
+        /* A Placa OPEN no meio do balcão */
+        .btn-open { 
+            background: #4CAF50; color: white; font-size: 28px; font-weight: bold; 
+            padding: 15px 40px; border: 4px solid #2E7D32; border-radius: 10px; 
+            cursor: pointer; box-shadow: 0 6px 0 #1b5e20, 0 10px 10px rgba(0,0,0,0.5); 
+            transition: transform 0.2s, box-shadow 0.2s;
+            transform: rotate(-3deg); /* Placa inclinada como no jogo */
+        }
+        .btn-open:active { transform: translateY(6px) rotate(-3deg); box-shadow: 0 0 0 #1b5e20, 0 2px 5px rgba(0,0,0,0.5); }
+        .btn-open.fechada { display: none; }
+
+        /* Comanda Flutuante */
+        .comanda-fisica { background: #fff; width: 80px; height: 100px; position: absolute; top: -60px; border-radius: 5px; box-shadow: 0 5px 10px rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; border-left: 4px solid #d32f2f; transition: transform 0.2s; animation: flutuar 2s infinite ease-in-out; }
         .comanda-fisica:hover { transform: scale(1.1) rotate(5deg); }
         @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
@@ -101,9 +114,13 @@
                     <div class="lobby">
                         <div class="fila-clientes" id="fila-clientes"></div>
                         <div class="balcao-atendimento">
+                            <!-- Placa OPEN no meio -->
                             <button id="btn-open" class="btn-open" onclick="abrirPizzaria()">OPEN</button>
+                            
+                            <!-- Comanda que aparece após o OPEN -->
                             <div class="comanda-fisica" id="comanda-fisica" onclick="pegarComanda()" style="display: none;">
-                                <p style="font-size: 14px; font-weight: bold;">PEDIDO</p>
+                                <p style="font-size: 14px; font-weight: bold; color: #d32f2f;">PEDIDO</p>
+                                <p style="font-size: 10px; color: #888; margin-top: 5px;">Clique</p>
                             </div>
                         </div>
                     </div>
@@ -145,7 +162,6 @@
     </div>
 
     <script>
-        /* ================= JAVASCRIPT ================= */
         const bancoDePerguntas = [
             { pergunta: "Quanto é 7 x 8?", opcoes: ["48", "56", "64", "72"], correta: "56" },
             { pergunta: "Qual é a capital da França?", opcoes: ["Paris", "Londres", "Berlim", "Roma"], correta: "Paris" },
@@ -177,36 +193,46 @@
             document.getElementById('jogo-principal').style.display = 'flex';
         }
 
+        // Quando o jogador clica em OPEN
         function abrirPizzaria() {
             if (pizzariaAberta) return;
             pizzariaAberta = true;
-            ui.btnOpen.style.display = 'none';
             
+            // Esconde a placa OPEN
+            ui.btnOpen.classList.add('fechada');
+            
+            // Faz os clientes entrarem na fila um por um
             for (let i = 0; i < 3; i++) {
                 setTimeout(() => {
                     const cliente = document.createElement('div');
                     cliente.style.fontSize = '80px';
                     cliente.innerText = ['👨‍🍳', '👩‍🦰', '🧔'][i];
                     cliente.style.cursor = 'pointer';
+                    // Quando clicar no cliente, ele faz o pedido
                     cliente.onclick = () => atenderCliente();
                     ui.filaClientes.appendChild(cliente);
-                }, i * 500);
+                }, i * 800); // 800ms de intervalo entre um cliente e outro
             }
         }
 
+        // O jogador clica no cliente para anotar o pedido
         function atenderCliente() {
             const index = Math.floor(Math.random() * bancoDePerguntas.length);
             perguntaAtual = bancoDePerguntas[index];
             
+            // Atualiza a comanda da direita
             ui.textoPedido.innerText = `Quero uma pizza com a resposta para: ${perguntaAtual.pergunta}`;
             ui.statusTicket.innerText = "Aguardando...";
+            
+            // Mostra a comanda física em cima do balcão
             ui.comandaFisica.style.display = 'flex';
         }
 
+        // O jogador clica na comanda física em cima do balcão
         function pegarComanda() {
             ui.comandaFisica.style.display = 'none';
-            ui.filaClientes.innerHTML = '';
-            irParaMontagem();
+            ui.filaClientes.innerHTML = ''; // Limpa a fila para o próximo cliente
+            irParaMontagem(); // Vai para a estação de montagem
         }
 
         function irParaMontagem() {
@@ -269,13 +295,16 @@
             ui.moedas.innerText = moedas;
             ui.textoPedido.innerText = "Pedido Entregue! +10 Moedas";
             ui.statusTicket.innerText = "Finalizado!";
+            
+            // Reseta o jogo para o Lobby
             pizzariaAberta = false;
-            ui.btnOpen.style.display = 'block';
+            ui.btnOpen.classList.remove('fechada'); // Mostra a placa OPEN de novo
             ui.btnForno.disabled = false;
             ui.btnForno.innerText = "Colocar no Forno";
             ui.pizzaForno.className = 'pizza-area';
             ui.barraForno.style.width = '0%';
             ui.pizzaMontagem.innerHTML = '';
+            
             setTimeout(() => { mudarEstacao('estacao-pedido'); }, 2000);
         }
 
