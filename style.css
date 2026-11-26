@@ -319,6 +319,20 @@ button {
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
 }
 
+.fliperama::after {
+    content: '';
+    position: absolute;
+    bottom: 54px;
+    left: 50%;
+    width: 50px;
+    height: 14px;
+    transform: translateX(-50%);
+    border: 4px solid rgba(0, 0, 0, 0.22);
+    border-radius: 8px;
+    background: #f7d774;
+    box-shadow: -16px 5px 0 -6px #e74c3c, 16px 5px 0 -6px #4caf50;
+}
+
 .fliperama-azul {
     left: 2%;
     background: #4aa3df;
@@ -403,6 +417,19 @@ button {
     inset: 8px;
     border-radius: 8px;
     background: repeating-linear-gradient(45deg, #7bd389 0 10px, #63bf72 10px 20px);
+}
+
+.prato {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    width: 34px;
+    height: 34px;
+    border: 5px solid #fff;
+    border-radius: 50%;
+    background: #f7d774;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18);
+    transform: translateX(-50%);
 }
 
 .cadeira {
@@ -521,6 +548,21 @@ button {
     border-radius: 44px 44px 8px 8px;
 }
 
+.cliente-corpo::before,
+.cliente-corpo::after {
+    content: '';
+    position: absolute;
+    top: 22px;
+    width: 26px;
+    height: 64px;
+    background: #e76f51;
+    border: 4px solid #9c4b32;
+    border-radius: 18px;
+}
+
+.cliente-corpo::before { left: -18px; transform: rotate(12deg); }
+.cliente-corpo::after { right: -18px; transform: rotate(-12deg); }
+
 .balcao {
     position: absolute;
     z-index: 10;
@@ -587,6 +629,7 @@ button {
 }
 
 .pote-vidro {
+    position: relative;
     width: 70px;
     height: 92px;
     display: flex;
@@ -602,6 +645,20 @@ button {
     margin-bottom: 8px;
     font-size: 38px;
 }
+
+.pote-vidro::before,
+.pote-vidro::after {
+    content: '';
+    position: absolute;
+    width: 34px;
+    height: 10px;
+    border: 3px solid #b8860b;
+    border-radius: 50%;
+    background: #f4c542;
+}
+
+.pote-vidro::before { bottom: 14px; left: 10px; }
+.pote-vidro::after { bottom: 26px; right: 10px; }
 
 .tabua-pizza {
     width: 170px;
@@ -656,6 +713,7 @@ button {
 .molho-vermelho { --cor: #d94f3d; }
 
 .tablet {
+    position: relative;
     width: 72px;
     height: 92px;
     display: flex;
@@ -672,6 +730,19 @@ button {
     font-size: 54px;
     font-weight: 900;
     text-shadow: 2px 2px 0 #fff;
+}
+
+.tablet::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    width: 44px;
+    height: 10px;
+    border: 4px solid #cfd8dc;
+    border-radius: 6px;
+    background: #fff;
+    transform: translateX(-50%);
 }
 
 .btn-balcao {
