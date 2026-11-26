@@ -3,100 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduPizzaria - Menu de Fases</title>
-    <link rel="stylesheet" href="style.css">
+    <title>EduPizzaria - O Jogo</title>
+    <style>
+        /* ================= RESET E FUNDO DO JOGO ================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; user-select: none; }
+        body { background-color: #222; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        
+        /* O Jogo inteiro fica dentro deste container */
+        #jogo { 
+            width: 100%; max-width: 1000px; height: 90vh; 
+            background: #e0e0e0; display: flex; flex-direction: column; 
+            border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Barra Superior (Moedas e Voltar) */
+        header { background: #ddd; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #999; }
+        header h1 { color: #d32f2f; font-size: 24px; }
+        .stats { background: #fff; padding: 5px 15px; border-radius: 20px; font-weight: bold; border: 2px solid #ccc; }
+
+        /* Área de Jogo (Onde as telas mudam) */
+        .game-area { flex: 1; position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .estacao { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        .estacao.ativa { display: flex; }
+
+        /* ================= TELA 1: LOBBY (Atendimento) ================= */
+        .lobby { width: 100%; height: 100%; background: #8FBC8F; position: relative; display: flex; flex-direction: column; justify-content: flex-end; }
+        /* Parede */
+        .parede { position: absolute; top: 0; left: 0; width: 100%; height: 60%; background: #a8d5a2; border-bottom: 5px solid #5d8a57; }
+        /* Comandas na parede */
+        .comandas-parede { position: absolute; top: 20px; left: 20px; display: flex; gap: 15px; }
+        .comanda-parede { width: 40px; height: 80px; background: white; border-top: 5px solid #d32f2f; box-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
+        /* Chão */
+        .chao { position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: #5d8a57; }
+        
+        /* Clientes (Bonequinhos) */
+        .fila-clientes { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; z-index: 2; }
+        .cliente { width: 60px; height: 120px; position: relative; cursor: pointer; transition: transform 0.2s; }
+        .cliente:hover { transform: scale(1.1); }
+        .cliente .cabeca { width: 40px; height: 40px; background: #f1c27d; border-radius: 50%; position: absolute; top: 0; left: 10px; border: 2px solid #8d5524; z-index: 2; }
+        .cliente .corpo { width: 60px; height: 70px; background: #d32f2f; position: absolute; bottom: 0; left: 0; border-radius: 10px 10px 0 0; }
+        .cliente .pernas { width: 40px; height: 20px; background: #333; position: absolute; bottom: -20px; left: 10px; border-radius: 5px; }
+        
+        /* O Balcão */
+        .balcao { position: absolute; bottom: 0; width: 100%; height: 100px; background: #5d4037; border-top: 10px solid #3e2723; z-index: 5; display: flex; justify-content: center; align-items: center; }
+        /* Botão OPEN */
+        .btn-open { background: #4CAF50; color: white; font-size: 24px; font-weight: bold; padding: 15px 40px; border: 4px solid #2E7D32; border-radius: 10px; cursor: pointer; box-shadow: 0 6px 0 #1b5e20; text-transform: uppercase; }
+        .btn-open:active { transform: translateY(6px); box-shadow: none; }
+        /* A comanda que aparece no balcão */
+        .comanda-fisica { display: none; width: 80px; height: 100px; background: white; border-left: 5px solid #d32f2f; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer; animation: flutuar 2s infinite ease-in-out; z-index: 10; justify-content: center; align-items: center; font-weight: bold; color: #d32f2f; }
+        @keyframes flutuar { 0%, 100% { top: -50px; } 50% { top: -60px; } }
+
+        /* ================= TELA 2: MONTAGEM (Cozinha) ================= */
+        .montagem { background: #8B4513; width: 100%; height: 100%; position: relative; display: flex; justify-content: center; align-items: center; }
+        /* Mesa de trabalho */
+        .mesa { width: 80%; height: 80%; background: #A0522D; border-radius: 20px; border: 10px solid #5d2e0c; position: relative; display: flex; justify-content: center; align-items: center; }
+        /* A Pizza */
+        .pizza { width: 300px; height: 300px; background: #f9e79f; border-radius: 50%; border: 15px solid #e67e22; box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; }
+        /* Botões de Ingredientes ao redor */
+        .ingredientes { position: absolute; bottom: 20px; display: flex; gap: 15px; }
+        .btn-ingrediente { width: 70px; height: 70px; border-radius: 50%; background: #ffca28; border: 4px solid #ff8f00; box-shadow: 0 5px 0 #b26500; cursor: pointer; font-weight: bold; color: #333; display: flex; justify-content: center; align-items: center; font-size: 14px; }
+        .btn-ingrediente:active { transform: translateY(5px); box-shadow: none; }
+        .btn-ingrediente:disabled { background: #888; border-color: #666; box-shadow: 0 5px 0 #444; cursor: not-allowed; }
+        /* Botão de Ir para o Forno */
+        .btn-acao { position: absolute; bottom: 20px; right: 20px; background: #4CAF50; color: white; font-size: 18px; padding: 15px 30px; border: none; border-radius: 10px; box-shadow: 0 5px 0 #2E7D32; cursor: pointer; font-weight: bold; }
+        .btn-acao:active { transform: translateY(5px); box-shadow: none; }
+
+        /* ================= TELA 3: CORTE ================= */
+        .corte { background: #555; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        .pizza-corte { width: 300px; height: 300px; background: #f9e79f; border-radius: 50%; border: 15px solid #e67e22; position: relative; }
+        /* Linhas de corte */
+        .linha { position: absolute; background: rgba(255,255,255,0.8); }
+        .linha.vertical { width: 4px; height: 100%; top: 0; left: 50%; transform: translateX(-50%); }
+        .linha.horizontal { height: 4px; width: 100%; top: 50%; left: 0; transform: translateY(-50%); }
+        .linha.diagonal1 { width: 4px; height: 100%; top: 0; left: 50%; transform: translateX(-50%) rotate(45deg); }
+        .linha.diagonal2 { width: 4px; height: 100%; top: 0; left: 50%; transform: translateX(-50%) rotate(-45deg); }
+
+        /* ================= COMANDA LATERAL (DIREITA) ================= */
+        .painel-direito { position: absolute; top: 10px; right: 10px; width: 220px; background: white; border-radius: 10px; border-left: 5px solid #e91e63; padding: 15px; z-index: 20; box-shadow: -5px 5px 15px rgba(0,0,0,0.3); }
+        .painel-direito h3 { color: #333; margin-bottom: 10px; border-bottom: 2px dashed #ccc; padding-bottom: 5px; font-size: 16px; }
+        .painel-direito p { color: #d32f2f; font-weight: bold; font-size: 16px; line-height: 1.4; }
+
+    </style>
 </head>
 <body>
 
-    <!-- TELA DE SELEÇÃO DE MATÉRIAS (MENU) -->
-    <div id="tela-selecao" class="hero">
-        <h1>EduPizzaria</h1>
-        <p>Escolha uma matéria para começar a trabalhar na pizzaria!</p>
-        <br>
-        <div class="grid" id="grid-fases">
-            <!-- Os cartões serão gerados pelo JavaScript -->
-        </div>
-    </div>
-
-    <!-- JOGO PRINCIPAL -->
-    <div id="jogo-container">
+    <div id="jogo">
         <header>
-            <div style="display: flex; align-items: center;">
-                <h1>EduPizzaria</h1>
-                <button class="btn-voltar" onclick="voltarAoMenu()">Sair</button>
-            </div>
+            <h1>EduPizzaria</h1>
             <div class="stats">Moedas: <span id="moedas">0</span></div>
         </header>
 
-        <div class="game-layout">
-            <div class="sidebar" id="sidebar-ingredientes"></div>
-
-            <div class="workspace">
-                <!-- Estação 1: Lobby -->
-                <div id="estacao-pedido" class="estacao ativa">
-                    <div class="lobby">
-                        <div class="parede-comandas">
+        <div class="game-area">
+            
+            <!-- TELA 1: LOBBY -->
+            <div id="tela-lobby" class="estacao ativa">
+                <div class="lobby">
+                    <div class="parede">
+                        <div class="comandas-parede">
                             <div class="comanda-parede"></div>
                             <div class="comanda-parede"></div>
                             <div class="comanda-parede"></div>
                         </div>
-                        <div class="chao"></div>
-                        
-                        <div class="personagem jogador">
-                            <div class="bone"></div>
-                            <div class="cabeca"></div>
-                            <div class="corpo"></div>
-                        </div>
-                        
-                        <div class="personagem cliente" id="cliente-na-fila" onclick="atenderCliente()">
-                            <div class="cabeca"></div>
-                            <div class="corpo"></div>
-                        </div>
+                    </div>
+                    <div class="chao"></div>
 
-                        <div class="balcao">
-                            <button id="btn-open" class="btn-open" onclick="abrirPizzaria()">OPEN</button>
-                            <div class="comanda-fisica" id="comanda-fisica" onclick="pegarComanda()">
-                                <span style="font-weight: bold; color: #d32f2f;">PEDIDO</span>
-                            </div>
+                    <!-- Fila de Clientes -->
+                    <div class="fila-clientes" id="fila-clientes">
+                        <!-- Clientes gerados pelo JS -->
+                    </div>
+
+                    <!-- Balcão -->
+                    <div class="balcao">
+                        <button id="btn-open" class="btn-open" onclick="abrirPizzaria()">OPEN</button>
+                        <div id="comanda-fisica" class="comanda-fisica" onclick="pegarComanda()">
+                            <span>PEDIDO</span>
                         </div>
                     </div>
-                </div>
-
-                <!-- Estação 2: Montagem -->
-                <div id="estacao-montagem" class="estacao">
-                    <div class="pizza-area" id="pizza-montagem"></div>
-                    <button class="btn-acao" onclick="irParaForno()" id="btn-montagem-feita" style="display:none;">Ir para o Forno</button>
-                </div>
-
-                <!-- Estação 3: Forno -->
-                <div id="estacao-forno" class="estacao">
-                    <div class="forno">
-                        <div class="pizza-area" id="pizza-forno"></div>
-                    </div>
-                    <div class="barra-container">
-                        <div id="barra-forno" class="barra-progresso"></div>
-                    </div>
-                    <button class="btn-acao" id="btn-forno" onclick="acionarForno()">Colocar no Forno</button>
-                </div>
-
-                <!-- Estação 4: Corte -->
-                <div id="estacao-corte" class="estacao">
-                    <div class="pizza-area" id="pizza-corte">
-                        <div class="linha-corte"></div>
-                        <div class="linha-corte horizontal"></div>
-                    </div>
-                    <button class="btn-acao" onclick="entregarPizza()">Entregar Pedido</button>
                 </div>
             </div>
 
-            <div class="ticket">
-                <h2>Comanda</h2>
-                <div class="ticket-pedido" id="texto-pedido">Aguardando...</div>
-                <p style="font-size: 12px; color: #888; margin-top: auto;">Status: <span id="status-ticket">Aguardando...</span></p>
+            <!-- TELA 2: MONTAGEM -->
+            <div id="tela-montagem" class="estacao">
+                <div class="montagem">
+                    <div class="mesa">
+                        <div class="pizza" id="pizza-montagem"></div>
+                        <div class="ingredientes" id="sidebar-ingredientes"></div>
+                        <button class="btn-acao" onclick="irParaCorte()" id="btn-ir-corte" style="display: none;">Ir para o Corte</button>
+                    </div>
+                </div>
             </div>
+
+            <!-- TELA 3: CORTE -->
+            <div id="tela-corte" class="estacao">
+                <div class="corte">
+                    <div class="pizza-corte">
+                        <div class="linha vertical"></div>
+                        <div class="linha horizontal"></div>
+                        <div class="linha diagonal1"></div>
+                        <div class="linha diagonal2"></div>
+                    </div>
+                    <button class="btn-acao" style="bottom: 20px; right: 20px;" onclick="entregarPizza()">Entregar Pizza</button>
+                </div>
+            </div>
+
+            <!-- COMANDA LATERAL (Sempre visível) -->
+            <div class="painel-direito" id="painel-comanda">
+                <h3>Comanda</h3>
+                <p id="texto-pedido">Aguardando...</p>
+            </div>
+
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Banco de Perguntas
+        const bancoDePerguntas = [
+            { pergunta: "Quanto é 7 x 8?", opcoes: ["48", "56", "64", "72"], correta: "56" },
+            { pergunta: "Qual a capital da França?", opcoes: ["Paris", "Londres", "Berlim", "Roma"], correta: "Paris" },
+            { pergunta: "Quem descobriu o Brasil?", opcoes: ["Cabral", "Colombo", "Pedro", "Vasco"], correta: "Cabral" }
+        ];
+
+        let perguntaAtual = null;
+        let moedas = 0;
+        let pizzariaAberta = false;
+
+        function abrirPizzaria() {
+            if (pizzariaAberta) return;
+            pizzariaAberta = true;
+            
+            // Esconde o botão OPEN
+            document.getElementById('btn-open').style.display = 'none';
+
+            // Cria 3 clientes (Bonequinhos CSS)
+            const fila = document.getElementById('fila-clientes');
+            fila.innerHTML = ''; // Limpa a fila
+            const cores = ['#1976d2', '#388e3c', '#fbc02d']; // Cores das roupas
+            const cabelos = ['#4e342e', '#fbc02d', '#000000'];
+
+            for (let i = 0; i < 3; i++) {
+                const cliente = document.createElement('div');
+                cliente.className = 'cliente';
+                cliente.onclick = () => atenderCliente();
+                cliente.innerHTML = `
+                    <div class="cabeca" style="background-color: ${cabelos[i]};"></div>
+                    <div class="corpo" style="background-color: ${cores[i]};"></div>
+                    <div class="pernas"></div>
+                `;
+                fila.appendChild(cliente);
+            }
+        }
+
+        function atenderCliente() {
+            // Sorteia uma pergunta
+            const index = Math.floor(Math.random() * bancoDePerguntas.length);
+            perguntaAtual = bancoDePerguntas[index];
+
+            // Mostra o pedido na comanda lateral
+            document.getElementById('texto-pedido').innerText = `Quero uma pizza com a resposta para: ${perguntaAtual.pergunta}`;
+
+            // Mostra a comanda física no balcão
+            document.getElementById('comanda-fisica').style.display = 'flex';
+            
+            // Limpa a fila (apenas visual)
+            document.getElementById('fila-clientes').innerHTML = '';
+        }
+
+        function pegarComanda() {
+            // Esconde a comanda física
+            document.getElementById('comanda-fisica').style.display = 'none';
+            
+            // Vai para a tela de montagem
+            document.getElementById('tela-lobby').classList.remove('ativa');
+            document.getElementById('tela-montagem').classList.add('ativa');
+
+            // Gera os botões de ingredientes
+            const sidebar = document.getElementById('sidebar-ingredientes');
+            sidebar.innerHTML = '';
+            perguntaAtual.opcoes.forEach(opcao => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-ingrediente';
+                btn.innerText = opcao;
+                btn.onclick = () => verificarIngrediente(opcao, btn);
+                sidebar.appendChild(btn);
+            });
+        }
+
+        function verificarIngrediente(opcao, btn) {
+            if (opcao === perguntaAtual.correta) {
+                // Acertou
+                btn.style.backgroundColor = '#4CAF50';
+                btn.style.color = 'white';
+                
+                // Adiciona um "ingrediente" visual na pizza
+                const pizza = document.getElementById('pizza-montagem');
+                const bolinha = document.createElement('div');
+                bolinha.style.width = '30px';
+                bolinha.style.height = '30px';
+                bolinha.style.backgroundColor = '#d32f2f';
+                bolinha.style.borderRadius = '50%';
+                bolinha.style.position = 'absolute';
+                bolinha.style.top = Math.random() * 200 + 'px';
+                bolinha.style.left = Math.random() * 200 + 'px';
+                pizza.appendChild(bolinha);
+
+                // Desabilita todos os botões e mostra o botão de ir para o corte
+                document.querySelectorAll('.btn-ingrediente').forEach(b => b.disabled = true);
+                document.getElementById('btn-ir-corte').style.display = 'block';
+            } else {
+                // Errou
+                btn.style.backgroundColor = '#d32f2f';
+                btn.disabled = true;
+            }
+        }
+
+        function irParaCorte() {
+            // Muda para a tela de corte
+            document.getElementById('tela-montagem').classList.remove('ativa');
+            document.getElementById('tela-corte').classList.add('ativa');
+        }
+
+        function entregarPizza() {
+            // Finaliza o pedido
+            moedas += 10;
+            document.getElementById('moedas').innerText = moedas;
+            document.getElementById('texto-pedido').innerText = "Pedido Entregue! +10 Moedas";
+            
+            // Reseta o jogo depois de 2 segundos
+            setTimeout(() => {
+                pizzariaAberta = false;
+                document.getElementById('btn-open').style.display = 'block';
+                document.getElementById('tela-corte').classList.remove('ativa');
+                document.getElementById('tela-lobby').classList.add('ativa');
+                document.getElementById('pizza-montagem').innerHTML = ''; // Limpa a pizza
+                document.getElementById('texto-pedido').innerText = "Aguardando...";
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
