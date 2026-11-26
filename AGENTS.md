@@ -1,18 +1,19 @@
 # AGENTS.md — EduPizzaria
 
 ## Visão geral
-<!-- Descrever o propósito do projeto: pizzaria educativa com desafios de Matemática e Português para os clientes. -->
+Jogo educativo estático em HTML, CSS e JavaScript puro, com visual inspirado em Good Pizza, Great Pizza. O jogador atende clientes, anota o pedido, monta a pizza com a resposta correta, leva ao forno e entrega.
 
 ## Estrutura
-<!-- backend/: API/servidor Node e dados em `backend/data/*.json`. -->
-<!-- frontend/: aplicação React + Vite (interface do jogo/pedidos/perguntas). -->
+- `index.html`: telas de menu, cliente, cozinha, forno e entrega.
+- `style.css`: arte em CSS puro (cliente, balcão, azulejos, pizza, forno) e animações.
+- `perguntas.js`: banco de perguntas e ingredientes.
+- `script.js`: estado do jogo, embaralhamento, montagem, forno, entrega e HUD.
 
 ## Comandos
-<!-- Raiz: scripts para orquestrar backend/frontend (ver package.json). -->
-<!-- Backend: `cd backend && npm install && npm run dev` (ou `npm start`). -->
-<!-- Frontend: `cd frontend && npm install && npm run dev`. -->
-<!-- Registrar aqui comandos de lint, teste e build quando disponíveis. -->
+- Abrir `index.html` no navegador, ou servir a pasta com `python3 -m http.server 8000`.
+- Não há build, dependências npm nem backend.
 
 ## Convenções
-<!-- Seguir padrões existentes, manter código simples e documentado quando necessário. -->
-<!-- Nunca commitar segredos, tokens ou arquivos .env. -->
+- Manter o jogo funcional sem dependências externas além da fonte Google Fonts.
+- Preferir CSS puro a imagens para a arte da pizza, do cliente e do forno.
+- Nunca commitar segredos, tokens ou arquivos `.env`.

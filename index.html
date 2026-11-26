@@ -4,447 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduPizzaria - Good Pizza Style</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        /* ================= RESET E ESTILO GERAL ================= */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; user-select: none; }
-        body { background-color: #fdf5e6; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; color: #4a3b32; }
-        .bg-paper { background-color: #fdf5e6; background-image: radial-gradient(#e0d6c8 1px, transparent 1px); background-size: 20px 20px; }
-        
-        #jogo { width: 100%; max-width: 1000px; height: 95vh; display: flex; flex-direction: column; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: white; position: relative; border: 4px solid #e0d6c8; }
-
-        /* ================= MENU ================= */
-        #tela-selecao { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #fff8e7; }
-        .titulo-menu { font-size: 50px; font-weight: 900; color: #d35400; text-shadow: 2px 2px 0 #f39c12; margin-bottom: 10px; text-align: center; }
-        .subtitulo-menu { font-size: 18px; color: #7f8c8d; margin-bottom: 40px; }
-        .grid-fases { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; }
-        .tile { background: white; border: 3px solid #e0d6c8; border-radius: 20px; padding: 25px; width: 260px; cursor: pointer; transition: transform 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .tile:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: #d35400; }
-        .tile__icone { width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 36px; color: white; margin-bottom: 15px; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .tile__name { font-size: 22px; font-weight: 700; color: #4a3b32; }
-        .tile__meta { font-size: 14px; color: #95a5a6; margin-top: 5px; }
-
-        /* ================= JOGO ================= */
-        .jogo-principal { display: flex; flex-direction: column; height: 100%; width: 100%; }
-        header { background: #f39c12; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; color: white; border-bottom: 4px solid #d35400; z-index: 10; }
-        header h1 { font-size: 24px; font-weight: 900; }
-        .stats { background: #fff; color: #d35400; padding: 5px 15px; border-radius: 20px; font-weight: bold; border: 2px solid #d35400; }
-        .btn-voltar { background: #e74c3c; color: white; border: none; padding: 5px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-left: 10px; border-bottom: 3px solid #c0392b; }
-        .btn-voltar:active { transform: translateY(2px); border-bottom: none; }
-
-        .game-layout { display: grid; grid-template-columns: 1fr; height: 100%; position: relative; background-color: #ecf0f1; overflow: hidden; }
-        .estacao { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; flex-direction: column; justify-content: center; align-items: center; }
-        .estacao.ativa { display: flex; }
-
-        /* --- TELA 1: LOBBY --- */
-        .lobby { width: 100%; height: 100%; background: #ffeaa7; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
-        .fundo-lobby { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, #fff3e0 60%, #d7ccc8 60%); }
-        .cliente-area { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; z-index: 2; }
-        .cliente-personagem { width: 120px; height: 160px; background: #f8c291; border-radius: 50% 50% 10% 10%; position: relative; border: 3px solid #e1b12c; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .cliente-personagem::before { content: ''; position: absolute; top: 30px; left: 25px; width: 15px; height: 15px; background: #4a3b32; border-radius: 50%; box-shadow: 45px 0 0 #4a3b32; }
-        .cliente-personagem::after { content: ''; position: absolute; top: 60px; left: 40px; width: 40px; height: 15px; border-bottom: 4px solid #4a3b32; border-radius: 50%; }
-        .balao-fala { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); background: white; border: 3px solid #4a3b32; padding: 15px 25px; border-radius: 20px; font-weight: bold; font-size: 18px; white-space: nowrap; box-shadow: 0 5px 0 rgba(0,0,0,0.1); }
-        .balao-fala::after { content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); border-width: 12px 12px 0; border-style: solid; border-color: #4a3b32 transparent transparent transparent; }
-        
-        .balcao { width: 100%; height: 150px; background: #d35400; border-top: 8px solid #a04000; display: flex; justify-content: center; align-items: center; z-index: 5; }
-        .btn-open { background: #27ae60; color: white; font-size: 24px; font-weight: 900; padding: 15px 50px; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 6px 0 #1e8449; transition: 0.1s; }
-        .btn-open:active { transform: translateY(6px); box-shadow: none; }
-        .btn-ok { display: none; background: #3498db; color: white; font-size: 20px; font-weight: bold; padding: 15px 40px; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 6px 0 #2980b9; margin-top: 20px; }
-        .btn-ok:active { transform: translateY(6px); box-shadow: none; }
-
-        /* --- TELA 2: COZINHA (MONTAGEM E ARRASTAR) --- */
-        .cozinha { width: 100%; height: 100%; background: #f5f6fa; display: flex; flex-direction: column; position: relative; }
-        
-        /* Bandeja Superior de Ingredientes (Arrastáveis) */
-        .bandeja-ingredientes { display: flex; justify-content: center; gap: 20px; padding: 20px; background: #fff; border-bottom: 3px solid #dcdde1; flex-wrap: wrap; }
-        
-        .ingrediente-arrastavel { 
-            width: 100px; height: 100px; 
-            background: #f1f2f6; border: 4px solid #dcdde1; border-radius: 15px; 
-            display: flex; justify-content: center; align-items: center; 
-            font-weight: bold; color: #4a3b32; cursor: grab; 
-            transition: transform 0.1s; box-shadow: 0 5px 0 #bdc3c7;
-            font-size: 18px; text-align: center;
-            position: relative;
-        }
-        /* Efeito de "ingrediente" dentro da caixa */
-        .ingrediente-arrastavel::before {
-            content: '🍕';
-            position: absolute; font-size: 40px; opacity: 0.3; top: 5px; right: 10px;
-        }
-        .ingrediente-arrastavel:active { cursor: grabbing; transform: scale(0.95); }
-        .ingrediente-arrastavel.esgotado { opacity: 0.3; cursor: not-allowed; }
-
-        /* Mesa e Pizza */
-        .mesa-trabalho { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; background: #fff3e0; }
-        
-        .pizza { 
-            width: 350px; height: 350px; 
-            background-color: #f1c40f; border-radius: 50%; 
-            border: 12px solid #d35400; 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2), inset 0 0 50px rgba(0,0,0,0.1); 
-            position: relative; display: flex; justify-content: center; align-items: center; 
-            transition: 0.3s;
-        }
-        /* Efeito ao arrastar o ingrediente sobre a pizza */
-        .pizza.drag-over { border-color: #27ae60; transform: scale(1.02); box-shadow: 0 0 20px #27ae60; }
-
-        /* Ingredientes colocados na pizza */
-        .topping { position: absolute; width: 30px; height: 30px; border-radius: 50%; background: #c0392b; box-shadow: inset -3px -3px 5px rgba(0,0,0,0.3); pointer-events: none; border: 1px solid #922b21; }
-
-        /* Controles de Ação */
-        .btn-acao { background: #27ae60; color: white; font-size: 18px; font-weight: bold; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 6px 0 #1e8449; margin-top: 20px; transition: 0.1s; z-index: 20; }
-        .btn-acao:active { transform: translateY(6px); box-shadow: none; }
-        .btn-acao:disabled { background: #bdc3c7; box-shadow: 0 6px 0 #95a5a6; cursor: not-allowed; }
-
-        /* --- TELA 3: FORNO --- */
-        .forno-maquina { width: 450px; height: 350px; background: #bdc3c7; border-radius: 20px; border: 8px solid #95a5a6; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .forno-janela { width: 350px; height: 150px; background: #2c3e50; border-radius: 15px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
-        .forno-pizza { width: 200px; height: 200px; background-color: #f1c40f; border-radius: 50%; border: 5px solid #d35400; transform: translateY(80px); transition: 0.5s; }
-        .barra-container { width: 70%; height: 25px; background: #ecf0f1; border: 4px solid #bdc3c7; border-radius: 15px; margin-top: 10px; overflow: hidden; }
-        .barra-progresso { width: 0%; height: 100%; background: #2ecc71; transition: width 0.1s linear, background-color 0.3s; }
-
-        /* Comanda Lateral */
-        .painel-comanda { position: absolute; top: 20px; right: 20px; width: 260px; background: white; border: 4px solid #e0d6c8; border-radius: 15px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 50; }
-        .painel-comanda h3 { font-size: 20px; color: #d35400; margin-bottom: 10px; border-bottom: 3px dashed #e0d6c8; padding-bottom: 8px; }
-        .painel-comanda p { font-size: 18px; font-weight: bold; color: #4a3b32; line-height: 1.4; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-paper">
-
-    <!-- TELA DE SELEÇÃO DE MATÉRIAS -->
-    <div id="tela-selecao">
-        <h1 class="titulo-menu">EduPizzaria</h1>
-        <p class="subtitulo-menu">Escolha o que deseja estudar hoje.</p>
-        <div class="grid-fases" id="grid-fases"></div>
-    </div>
-
-    <!-- JOGO PRINCIPAL -->
-    <div id="jogo-container" class="jogo-principal" style="display: none;">
-        <header>
-            <div style="display: flex; align-items: center;">
-                <h1>EduPizzaria</h1>
-                <button class="btn-voltar" onclick="voltarAoMenu()">Sair</button>
-            </div>
-            <div class="stats">Moedas: <span id="moedas">0</span></div>
-        </header>
-
-        <div class="game-layout">
-            
-            <!-- TELA 1: LOBBY -->
-            <div id="estacao-pedido" class="estacao ativa">
-                <div class="lobby">
-                    <div class="fundo-lobby"></div>
-                    <div class="cliente-area" id="cliente-area" style="display: none;">
-                        <div class="balao-fala" id="balao-fala">...</div>
-                        <div class="cliente-personagem"></div>
+<body>
+    <div id="app">
+        <section id="tela-menu" class="tela ativa">
+            <div class="cena-menu">
+                <div class="menu-decor menu-decor-esquerda"></div>
+                <div class="menu-decor menu-decor-direita"></div>
+                <div class="menu-conteudo">
+                    <div class="logo-pizza">
+                        <div class="logo-molho"></div>
+                        <div class="logo-queijo"></div>
+                        <span class="logo-topping logo-topping-1"></span>
+                        <span class="logo-topping logo-topping-2"></span>
+                        <span class="logo-topping logo-topping-3"></span>
                     </div>
-                    <div class="balcao">
-                        <button id="btn-open" class="btn-open" onclick="abrirPizzaria()">ABRIR</button>
-                        <button id="btn-atender" class="btn-ok" onclick="pegarComanda()">Anotar Pedido</button>
-                    </div>
+                    <h1>EduPizzaria</h1>
+                    <p>Aprenda enquanto faz a melhor pizza da cidade!</p>
+                    <button id="btn-iniciar" class="btn-primario">Abrir a loja</button>
+                    <div class="menu-assinatura">Massa, molho e conhecimento</div>
                 </div>
             </div>
+        </section>
 
-            <!-- TELA 2: COZINHA (Montagem com Drag & Drop) -->
-            <div id="estacao-montagem" class="estacao">
-                <div class="cozinha">
-                    <div class="painel-comanda">
-                        <h3>Pedido</h3>
-                        <p id="texto-pedido-cozinha">...</p>
-                    </div>
-
-                    <!-- Bandeja de Ingredientes (Arrastáveis) -->
-                    <div class="bandeja-ingredientes" id="bandeja-ingredientes">
-                        <!-- Botões gerados via JS -->
-                    </div>
-
-                    <!-- Mesa de Trabalho -->
-                    <div class="mesa-trabalho">
-                        <!-- A Pizza com dropzone -->
-                        <div class="pizza" id="pizza-montagem" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
-                            <!-- Toppings entram aqui -->
+        <section id="tela-cliente" class="tela">
+            <header class="hud">
+                <div class="hud-item"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
+                <div class="hud-item hud-item-centro"><span class="hud-icone">⭐</span><span class="hud-nivel">1</span></div>
+                <div class="hud-item">Dia 1</div>
+            </header>
+            <div class="cena-loja">
+                <div class="janela">
+                    <div class="janela-nuvem janela-nuvem-1"></div>
+                    <div class="janela-nuvem janela-nuvem-2"></div>
+                    <div class="janela-morro"></div>
+                </div>
+                <div class="quadro">🍕</div>
+                <div class="planta"><span></span><span></span><span></span><i></i></div>
+                <div class="cliente-cena">
+                    <div class="balao-fala" id="balao-cliente">Carregando pedido...</div>
+                    <div class="cliente" id="avatar-cliente">
+                        <div class="cliente-cabelo"></div>
+                        <div class="cliente-cabeca">
+                            <span class="cliente-olho cliente-olho-esquerdo"></span>
+                            <span class="cliente-olho cliente-olho-direito"></span>
+                            <span class="cliente-boca"></span>
                         </div>
-                        <button class="btn-acao" onclick="irParaForno()" id="btn-montagem-feita" style="display:none; position: absolute; bottom: 20px; right: 20px;">Assar Pizza</button>
+                        <div class="cliente-corpo"></div>
                     </div>
                 </div>
+                <div class="balcao"></div>
+                <button id="btn-anotar" class="btn-primario btn-balcao">Anotar pedido</button>
             </div>
+        </section>
 
-            <!-- TELA 3: FORNO -->
-            <div id="estacao-forno" class="estacao">
-                <div class="cozinha">
-                    <div class="mesa-trabalho">
-                        <div class="forno-maquina">
-                            <div class="forno-janela">
-                                <div class="forno-pizza" id="pizza-forno"></div>
+        <section id="tela-cozinha" class="tela">
+            <header class="hud">
+                <div class="hud-item"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
+                <div class="hud-item hud-item-centro"><span class="hud-icone">⭐</span><span class="hud-nivel">1</span></div>
+                <div class="hud-item">Cozinha</div>
+            </header>
+            <div class="cozinha">
+                <div class="azulejo"></div>
+                <div class="comanda">
+                    <h3>Pedido</h3>
+                    <p id="texto-pedido-cozinha">Quanto é...</p>
+                </div>
+                <div class="estacao-montagem">
+                    <div class="mesa">
+                        <div class="tabua">
+                            <div id="pizza" class="pizza pizza-vazia">
+                                <div class="pizza-molho"></div>
+                                <div class="pizza-queijo"></div>
+                                <div class="pizza-toppings"></div>
                             </div>
-                            <div class="barra-container">
-                                <div id="barra-forno" class="barra-progresso"></div>
-                            </div>
-                            <button class="btn-acao" id="btn-forno" onclick="acionarForno()">Ligar Forno</button>
                         </div>
                     </div>
+                    <div id="ingredientes" class="bandeja"></div>
+                </div>
+                <div id="feedback" class="feedback-msg" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <section id="tela-forno" class="tela">
+            <header class="hud">
+                <div class="hud-item"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
+                <div class="hud-item hud-item-centro"><span class="hud-icone">⭐</span><span class="hud-nivel">1</span></div>
+                <div class="hud-item">Forno</div>
+            </header>
+            <div class="cena-forno">
+                <div class="forno" id="forno">
+                    <div class="forno-chamine"></div>
+                    <div class="forno-janela">
+                        <div id="pizza-forno" class="pizza-forno"></div>
+                    </div>
+                    <div class="forno-painel">
+                        <div class="medidor"><div id="barra-forno" class="medidor-barra"></div></div>
+                        <span id="texto-forno">Ligando...</span>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <!-- TELA 4: ENTREGA -->
-            <div id="estacao-entrega" class="estacao">
-                <div class="lobby" style="justify-content: center; align-items: center;">
-                    <h2 style="font-size: 36px; color: #27ae60; margin-bottom: 20px;">Pizza Entregue!</h2>
-                    <p style="font-size: 20px; margin-bottom: 30px;">+10 Moedas</p>
-                    <button class="btn-acao" onclick="proximoCliente()">Próximo Cliente</button>
+        <section id="tela-entrega" class="tela">
+            <header class="hud">
+                <div class="hud-item"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
+                <div class="hud-item hud-item-centro"><span class="hud-icone">⭐</span><span class="hud-nivel">1</span></div>
+                <div class="hud-item">Entrega</div>
+            </header>
+            <div class="cena-entrega">
+                <div class="cliente cliente-entrega">
+                    <div class="cliente-cabelo"></div>
+                    <div class="cliente-cabeca">
+                        <span class="cliente-olho cliente-olho-esquerdo"></span>
+                        <span class="cliente-olho cliente-olho-direito"></span>
+                        <span class="cliente-boca"></span>
+                    </div>
+                    <div class="cliente-corpo"></div>
+                </div>
+                <div class="comanda-entrega">
+                    <h2 id="titulo-entrega">Pedido entregue!</h2>
+                    <p id="texto-entrega">O cliente ficou feliz.</p>
+                    <div class="moeda-ganha" id="moeda-ganha">+10 🪙</div>
+                    <button id="btn-proximo" class="btn-primario">Próximo cliente</button>
                 </div>
             </div>
-
-        </div>
+        </section>
     </div>
-
-    <script>
-        // ================= BANCO DE DADOS =================
-        const FASES = [
-            {
-                id: "matematica", nome: "Matemática", descricao: "Contas e troco",
-                cor: "#e74c3c", icone: "M",
-                perguntas: [
-                    { pergunta: "Quanto é 7 x 8?", opcoes: ["48", "56", "64", "72"], correta: "56" },
-                    { pergunta: "Quanto é 15 + 27?", opcoes: ["32", "42", "52", "38"], correta: "42" }
-                ]
-            },
-            {
-                id: "portugues", nome: "Português", descricao: "Ortografia e gramática",
-                cor: "#27ae60", icone: "P",
-                perguntas: [
-                    { pergunta: "Como se escreve corretamente?", opcoes: ["Calabresa", "Calabreza", "Kcalabresa"], correta: "Calabresa" },
-                    { pergunta: "Qual palavra está correta?", opcoes: ["Pizzaria", "Pizaria", "Pitsaria"], correta: "Pizzaria" }
-                ]
-            }
-        ];
-
-        let perguntaAtual = null;
-        let moedas = 0;
-        let tempoForno = 0;
-        let intervalForno = null;
-        let listaPerguntasAtual = [];
-        let indicePerguntaAtual = 0;
-        let ingredienteArrastado = null;
-
-        // Elementos DOM
-        const ui = {
-            gridFases: document.getElementById('grid-fases'),
-            jogoContainer: document.getElementById('jogo-container'),
-            telaSelecao: document.getElementById('tela-selecao'),
-            moedas: document.getElementById('moedas'),
-            balaoFala: document.getElementById('balao-fala'),
-            clienteArea: document.getElementById('cliente-area'),
-            btnOpen: document.getElementById('btn-open'),
-            btnAtender: document.getElementById('btn-atender'),
-            bandejaIngredientes: document.getElementById('bandeja-ingredientes'),
-            pizzaMontagem: document.getElementById('pizza-montagem'),
-            textoPedidoCozinha: document.getElementById('texto-pedido-cozinha'),
-            btnMontagemFeita: document.getElementById('btn-montagem-feita'),
-            pizzaForno: document.getElementById('pizza-forno'),
-            barraForno: document.getElementById('barra-forno'),
-            btnForno: document.getElementById('btn-forno')
-        };
-
-        // ================= LÓGICA DO MENU =================
-        function criarMenu() {
-            ui.gridFases.innerHTML = '';
-            FASES.forEach(fase => {
-                const tile = document.createElement('div');
-                tile.className = 'tile';
-                tile.onclick = () => iniciarFase(fase.id);
-                tile.innerHTML = `
-                    <div class="tile__icone" style="background-color: ${fase.cor};">${fase.icone}</div>
-                    <div class="tile__name">${fase.nome}</div>
-                    <div class="tile__meta">${fase.descricao}</div>
-                `;
-                ui.gridFases.appendChild(tile);
-            });
-        }
-
-        function iniciarFase(idFase) {
-            const faseAtual = FASES.find(f => f.id === idFase);
-            listaPerguntasAtual = faseAtual.perguntas;
-            indicePerguntaAtual = 0;
-            moedas = 0;
-            ui.moedas.innerText = moedas;
-
-            ui.telaSelecao.style.display = 'none';
-            ui.jogoContainer.style.display = 'flex';
-
-            ui.clienteArea.style.display = 'none';
-            ui.btnOpen.style.display = 'block';
-            ui.btnAtender.style.display = 'none';
-            
-            mudarEstacao('estacao-pedido');
-        }
-
-        function voltarAoMenu() {
-            ui.telaSelecao.style.display = 'flex';
-            ui.jogoContainer.style.display = 'none';
-            if(intervalForno) clearInterval(intervalForno);
-        }
-
-        // ================= LÓGICA DO JOGO =================
-        function abrirPizzaria() {
-            ui.btnOpen.style.display = 'none';
-            if (indicePerguntaAtual >= listaPerguntasAtual.length) {
-                alert("Você concluiu todos os pedidos desta matéria!");
-                voltarAoMenu();
-                return;
-            }
-            
-            perguntaAtual = listaPerguntasAtual[indicePerguntaAtual];
-            ui.balaoFala.innerText = `Quero uma pizza com a resposta para: ${perguntaAtual.pergunta}`;
-            ui.clienteArea.style.display = 'flex';
-            ui.btnAtender.style.display = 'block';
-        }
-
-        function pegarComanda() {
-            ui.clienteArea.style.display = 'none';
-            ui.btnAtender.style.display = 'none';
-            
-            ui.bandejaIngredientes.innerHTML = '';
-            ui.textoPedidoCozinha.innerText = perguntaAtual.pergunta;
-            
-            // Cria os ingredientes arrastáveis
-            perguntaAtual.opcoes.forEach(opcao => {
-                const divIngrediente = document.createElement('div');
-                divIngrediente.className = 'ingrediente-arrastavel';
-                divIngrediente.innerText = opcao;
-                divIngrediente.draggable = true;
-                divIngrediente.dataset.resposta = opcao;
-                
-                divIngrediente.ondragstart = (e) => dragStart(e, divIngrediente);
-                
-                ui.bandejaIngredientes.appendChild(divIngrediente);
-            });
-
-            ui.pizzaMontagem.innerHTML = '';
-            ui.btnMontagemFeita.style.display = 'none';
-
-            mudarEstacao('estacao-montagem');
-        }
-
-        // ================= ARRASTAR E SOLTAR =================
-        function dragStart(e, elemento) {
-            ingredienteArrastado = elemento;
-            e.dataTransfer.setData("text", elemento.dataset.resposta);
-        }
-
-        function allowDrop(e) {
-            e.preventDefault();
-            ui.pizzaMontagem.classList.add('drag-over');
-        }
-
-        function dragLeave(e) {
-            ui.pizzaMontagem.classList.remove('drag-over');
-        }
-
-        function drop(e) {
-            e.preventDefault();
-            ui.pizzaMontagem.classList.remove('drag-over');
-
-            const respostaArrastada = e.dataTransfer.getData("text");
-
-            if (respostaArrastada === perguntaAtual.correta) {
-                // Acertou
-                ingredienteArrastado.classList.add('esgotado');
-                
-                // Adiciona as bolinhas de ingrediente na pizza (simulando os toppings)
-                for(let i=0; i<10; i++) {
-                    const topping = document.createElement('div');
-                    topping.className = 'topping';
-                    const angle = Math.random() * Math.PI * 2;
-                    const radius = Math.random() * 120;
-                    const x = 175 + Math.cos(angle) * radius - 15;
-                    const y = 175 + Math.sin(angle) * radius - 15;
-                    
-                    topping.style.left = `${x}px`;
-                    topping.style.top = `${y}px`;
-                    ui.pizzaMontagem.appendChild(topping);
-                }
-
-                // Desabilita os outros e libera o botão de assar
-                document.querySelectorAll('.ingrediente-arrastavel').forEach(el => {
-                    el.draggable = false;
-                    el.classList.add('esgotado');
-                });
-                ui.btnMontagemFeita.style.display = 'block';
-            } else {
-                // Errou
-                ingredienteArrastado.style.backgroundColor = '#e74c3c';
-                ingredienteArrastado.style.color = 'white';
-                ingredienteArrastado.draggable = false;
-            }
-        }
-
-        // ================= FORNO E ENTREGA =================
-        function irParaForno() {
-            mudarEstacao('estacao-forno');
-            ui.btnMontagemFeita.style.display = 'none';
-            
-            tempoForno = 0;
-            ui.barraForno.style.width = '0%';
-            ui.btnForno.disabled = false;
-            ui.btnForno.innerText = "Ligar Forno";
-            ui.pizzaForno.style.backgroundColor = '#f1c40f';
-        }
-
-        function acionarForno() {
-            ui.btnForno.disabled = true;
-            ui.btnForno.innerText = "Assando...";
-            
-            intervalForno = setInterval(() => {
-                tempoForno += 2;
-                ui.barraForno.style.width = tempoForno + '%';
-                
-                if (tempoForno < 40) ui.barraForno.style.backgroundColor = '#2ecc71';
-                else if (tempoForno < 70) ui.barraForno.style.backgroundColor = '#f1c40f';
-                else ui.barraForno.style.backgroundColor = '#e74c3c';
-
-                if (tempoForno >= 100) {
-                    clearInterval(intervalForno);
-                    finalizarForno();
-                }
-            }, 100);
-        }
-
-        function finalizarForno() {
-            if (tempoForno >= 100) {
-                ui.pizzaForno.style.backgroundColor = '#e67e22'; 
-                ui.btnForno.innerText = "Pizza Pronta!";
-            } else {
-                ui.pizzaForno.style.backgroundColor = '#333'; 
-                ui.btnForno.innerText = "Pizza Estragada!";
-            }
-
-            setTimeout(() => {
-                mudarEstacao('estacao-entrega');
-            }, 2000);
-        }
-
-        function proximoCliente() {
-            moedas += 10;
-            ui.moedas.innerText = moedas;
-            indicePerguntaAtual++;
-            mudarEstacao('estacao-pedido');
-            
-            if (indicePerguntaAtual >= listaPerguntasAtual.length) {
-                ui.btnOpen.innerText = "FIM DA FASE";
-            } else {
-                ui.btnOpen.innerText = "ABRIR";
-                ui.btnOpen.style.display = 'block';
-            }
-        }
-
-        function mudarEstacao(id) {
-            document.querySelectorAll('.estacao').forEach(el => el.classList.remove('ativa'));
-            document.getElementById(id).classList.add('ativa');
-        }
-
-        window.onload = criarMenu;
-    </script>
+    <script src="perguntas.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
