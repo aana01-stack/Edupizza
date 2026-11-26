@@ -1,63 +1,127 @@
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Comic Sans MS', cursive, sans-serif; }
-body { background-color: #333; height: 100vh; overflow: hidden; }
-
-/* --- TELA INICIAL --- */
-.tela-inicial {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-    background-color: #4CAF50;
-    background-image: linear-gradient(45deg, #388E3C 25%, transparent 25%, transparent 75%, #388E3C 75%, #388E3C), linear-gradient(45deg, #388E3C 25%, transparent 25%, transparent 75%, #388E3C 75%, #388E3C);
-    background-size: 100px 100px; background-position: 0 0, 50px 50px;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    z-index: 9999; transition: opacity 0.5s;
+/* ================= CSS BASEADO NO PAPA'S HUB ================= */
+:root {
+    --paper: #FBF3E4;
+    --ink: #2B1B18;
+    --cherry: #C42A45;
+    --mint: #2E7D6B;
+    --gold: #E9B44C;
+    --font-display: 'Georgia', serif;
+    --font-body: 'Arial', sans-serif;
 }
-.tela-inicial.escondida { opacity: 0; pointer-events: none; }
-.logo-inicial h1 { font-size: 80px; color: #d32f2f; text-shadow: 4px 4px 0 #fff, 8px 8px 0 #000; background: white; padding: 20px 50px; border-radius: 50%; border: 10px solid #d32f2f; transform: rotate(-5deg); margin-bottom: 20px;}
-.logo-inicial p { color: white; font-size: 24px; text-shadow: 2px 2px 0 #000; margin-bottom: 40px; font-weight: bold; }
-.menu-inicial { display: flex; flex-direction: column; gap: 15px; }
-.menu-inicial button { background: #ffca28; color: #5d4037; font-size: 24px; font-weight: bold; padding: 15px 50px; border: 4px solid #ff8f00; border-radius: 50px; box-shadow: 0 6px 0 #b26500; cursor: pointer; transition: 0.1s; }
-.menu-inicial button:active { transform: translateY(6px); box-shadow: none; }
 
-/* --- JOGO PRINCIPAL --- */
-.jogo-principal { display: flex; flex-direction: column; height: 100vh; }
-header { background: #e0e0e0; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 5px solid #a0a0a0; }
-header h1 { color: #d32f2f; font-size: 24px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    background-color: var(--paper);
+    background-image: radial-gradient(circle at 1px 1px, rgba(43,27,24,.05) 1px, transparent 0);
+    background-size: 22px 22px;
+    color: var(--ink);
+    font-family: var(--font-body);
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh; padding: 40px 20px;
+}
+
+h1, h2 { font-family: var(--font-display); text-align: center; }
+.hero { text-align: center; margin-bottom: 40px; }
+.hero h1 { font-size: 48px; color: var(--cherry); margin-bottom: 10px; }
+.hero p { font-size: 18px; color: #7A6155; }
+
+/* Grid de Cartões (Tiles) */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.tile {
+    background: white;
+    border: 1px solid rgba(43,27,24,.14);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex; align-items: center; gap: 15px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
+}
+
+.tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px -20px rgba(43,27,24,0.5);
+    border-color: rgba(43,27,24,.28);
+}
+
+.tile__sticker {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    color: white; font-family: var(--font-display); font-size: 24px; font-weight: bold;
+    box-shadow: inset 0 0 0 4px rgba(255,255,255,0.3);
+}
+
+.tile__info { display: flex; flex-direction: column; }
+.tile__name { font-family: var(--font-display); font-size: 22px; font-weight: bold; }
+.tile__meta { font-size: 14px; color: #7A6155; margin-top: 4px; }
+
+/* ================= JOGO (Invisível no início) ================= */
+#jogo-container { display: none; width: 100%; max-width: 1000px; height: 90vh; flex-direction: column; }
+
+header { background: #e0e0e0; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 5px solid #a0a0a0; border-radius: 10px 10px 0 0; }
+header h1 { font-size: 24px; margin: 0; color: var(--cherry); }
 .stats { background: #fff; padding: 5px 15px; border-radius: 20px; font-weight: bold; border: 2px solid #ccc; }
+.btn-voltar { background: var(--cherry); color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-left: 10px; }
 
-.game-layout { display: grid; grid-template-columns: 140px 1fr 250px; height: calc(100vh - 60px); gap: 10px; padding: 10px; background: #222; }
+.game-layout { display: grid; grid-template-columns: 130px 1fr 260px; height: calc(100vh - 150px); gap: 10px; padding: 10px; background: #222; border-radius: 0 0 10px 10px; }
+
 .sidebar { background: #444; border-radius: 10px; padding: 15px 10px; display: flex; flex-direction: column; gap: 15px; align-items: center; overflow-y: auto; }
-.btn-ingrediente { width: 90px; height: 90px; border-radius: 50%; background: #ffca28; border: 4px solid #ff8f00; box-shadow: 0 6px 0 #b26500; cursor: pointer; font-size: 30px; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: 0.1s; color: #333; }
-.btn-ingrediente:active { transform: translateY(6px); box-shadow: 0 0 0 #b26500; }
+.btn-ingrediente { width: 80px; height: 80px; border-radius: 50%; background: #ffca28; border: 4px solid #ff8f00; box-shadow: 0 6px 0 #b26500; cursor: pointer; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: 0.1s; color: #333; text-align: center; padding: 5px; }
+.btn-ingrediente:active { transform: translateY(6px); box-shadow: none; }
 .btn-ingrediente:disabled { background: #888; border-color: #666; box-shadow: 0 6px 0 #444; cursor: not-allowed; }
 
-/* Área Central */
-.workspace { background: #eab676; background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 20px, transparent 20px, transparent 40px); border-radius: 15px; display: flex; justify-content: center; align-items: center; position: relative; border: 8px solid #555; overflow: hidden; }
-.estacao { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; }
+.workspace { border-radius: 15px; display: flex; justify-content: center; align-items: center; position: relative; border: 8px solid #555; overflow: hidden; }
+.estacao { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; position: relative; }
 .estacao.ativa { display: flex; }
 
-/* Estação 1 (Lobby) */
-.lobby { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
-.fila-clientes { flex-grow: 1; display: flex; justify-content: center; align-items: flex-end; gap: 20px; padding-bottom: 20px; }
-.balcao-atendimento { background: #8B4513; width: 100%; height: 120px; border-top: 10px solid #5d2e0c; border-radius: 20px 20px 0 0; display: flex; justify-content: center; align-items: flex-start; box-shadow: inset 0 10px 20px rgba(0,0,0,0.3); position: relative; }
-.btn-open { position: absolute; bottom: 20px; right: 20px; background: #4CAF50; color: white; font-size: 24px; font-weight: bold; padding: 10px 20px; border: 4px solid #2E7D32; border-radius: 10px; cursor: pointer; box-shadow: 0 5px 0 #1b5e20; }
-.btn-open:active { transform: translateY(5px); box-shadow: none; }
-.comanda-fisica { background: #fff; width: 80px; height: 100px; position: relative; top: -40px; border-radius: 5px; box-shadow: 0 5px 10px rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; border-left: 4px solid #d32f2f; transition: transform 0.2s; animation: flutuar 2s infinite ease-in-out; }
-.comanda-fisica:hover { transform: scale(1.1) rotate(5deg); }
-@keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+/* Estação 1 - Lobby */
+.lobby { width: 100%; height: 100%; display: flex; flex-direction: column; position: relative; background-color: #8FBC8F; }
+.parede-comandas { position: absolute; top: 10px; left: 0; width: 100%; height: 100px; display: flex; justify-content: center; gap: 30px; }
+.comanda-parede { width: 30px; height: 60px; background: white; border: 1px solid #ccc; border-top: 4px solid #d32f2f; }
+.chao { position: absolute; bottom: 100px; left: 0; width: 100%; height: 150px; background-image: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%); background-size: 40px 40px; background-position: 0 0, 0 20px, 20px -20px, -20px 0px; background-color: #a9a9a9; }
 
-/* Pizza e Forno */
-.pizza-area { width: 250px; height: 250px; background-color: #f9e79f; border-radius: 50%; box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 12px solid #e67e22; position: relative; display: flex; justify-content: center; align-items: center; transition: 0.5s; }
-.pizza-area.dourada { background-color: #f39c12; }
-.pizza-area.queimada { background-color: #333; border-color: #111; }
+.personagem { position: absolute; bottom: 100px; width: 60px; height: 120px; z-index: 2; }
+.cabeca { width: 40px; height: 40px; background: #f1c27d; border-radius: 50%; position: absolute; top: 0; left: 10px; border: 2px solid #8d5524; }
+.corpo { width: 60px; height: 60px; position: absolute; bottom: 0; left: 0; border-radius: 10px 10px 0 0; }
+.bone { width: 50px; height: 20px; background: #1976d2; position: absolute; top: -10px; left: 5px; border-radius: 10px 10px 0 0; border: 2px solid #0d47a1; }
+
+.jogador { left: 20px; bottom: 80px; z-index: 5; }
+.jogador .corpo { background: #d32f2f; width: 50px; left: 5px; height: 50px; }
+.jogador .cabeca { left: 10px; }
+.jogador .bone { left: 10px; }
+
+.cliente { left: 50%; transform: translateX(-50%); bottom: 100px; display: none; cursor: pointer; }
+.cliente .corpo { background: #fbc02d; }
+
+.balcao { position: absolute; bottom: 0; width: 100%; height: 100px; background: #5d4037; border-top: 10px solid #3e2723; z-index: 10; display: flex; justify-content: center; align-items: center; }
+.btn-open { background: #4CAF50; color: white; font-size: 24px; font-weight: bold; padding: 15px 40px; border: 4px solid #2E7D32; border-radius: 10px; cursor: pointer; box-shadow: 0 6px 0 #1b5e20; text-transform: uppercase; letter-spacing: 2px; transition: 0.1s; }
+.btn-open:active { transform: translateY(6px); box-shadow: none; }
+.comanda-fisica { display: none; width: 80px; height: 100px; background: white; border-left: 5px solid #d32f2f; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer; animation: flutuar 2s infinite ease-in-out; z-index: 15; justify-content: center; align-items: center; }
+.comanda-fisica:hover { transform: translateX(-50%) scale(1.1); }
+@keyframes flutuar { 0%, 100% { top: -50px; } 50% { top: -60px; } }
+
+/* Estações de Cozinha */
+.pizza-area { width: 250px; height: 250px; background-color: #f9e79f; border-radius: 50%; box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 12px solid #e67e22; position: relative; display: flex; justify-content: center; align-items: center; transition: 0.5s; background-image: radial-gradient(circle, #f9e79f 60%, #f39c12 100%); }
+.pizza-area.dourada { background-image: radial-gradient(circle, #f39c12 60%, #d35400 100%); }
+.pizza-area.queimada { background-image: radial-gradient(circle, #333 60%, #111 100%); border-color: #111; }
 .forno { width: 350px; height: 350px; background: #555; border-radius: 20px; display: flex; justify-content: center; align-items: center; border: 15px solid #333; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
 .linha-corte { position: absolute; background: rgba(255,255,255,0.8); height: 100%; width: 4px; top: 0; left: 50%; transform: translateX(-50%); }
 .linha-corte.horizontal { width: 100%; height: 4px; top: 50%; left: 0; transform: translateY(-50%); }
-.btn-acao { background: #4CAF50; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; box-shadow: 0 5px 0 #2E7D32; cursor: pointer; margin-top: 20px; font-weight: bold; transition: 0.1s; }
+.btn-acao { background: #4CAF50; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; box-shadow: 0 5px 0 #2E7D32; cursor: pointer; margin-top: 20px; font-weight: bold; transition: 0.1s; z-index: 20; }
 .btn-acao:active { transform: translateY(5px); box-shadow: none; }
 .btn-acao:disabled { background: #888; box-shadow: 0 5px 0 #555; cursor: not-allowed; }
-
-/* Comanda Direita */
-.ticket { background: #fff; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; border-left: 8px solid #e91e63; box-shadow: -5px 5px 15px rgba(0,0,0,0.3); }
-.ticket h2 { font-size: 20px; color: #333; margin-bottom: 15px; border-bottom: 2px dashed #ccc; padding-bottom: 10px; }
-.ticket-pedido { font-size: 18px; color: #d32f2f; font-weight: bold; line-height: 1.4; }
-.barra-container { width: 80%; height: 25px; background: #ddd; border-radius: 15px; margin-top: 20px; overflow: hidden; border: 2px solid #aaa; }
+.barra-container { width: 80%; height: 25px; background: #ddd; border-radius: 15px; margin-top: 20px; overflow: hidden; border: 2px solid #aaa; z-index: 20; }
 .barra-progresso { width: 0%; height: 100%; background: #4CAF50; transition: width 0.1s linear, background-color 0.3s; }
+
+.ticket { background: #fff; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; border-left: 8px solid #e91e63; box-shadow: -5px 5px 15px rgba(0,0,0,0.3); }
+.ticket h2 { font-size: 20px; color: #333; margin-bottom: 15px; border-bottom: 2px dashed #ccc; padding-bottom: 10px; text-align: left; }
+.ticket-pedido { font-size: 18px; color: #d32f2f; font-weight: bold; line-height: 1.4; }

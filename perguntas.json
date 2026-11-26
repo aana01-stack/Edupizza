@@ -1,0 +1,38 @@
+[
+  {
+    "id": "matematica",
+    "nome": "Matemática",
+    "descricao": "Contas e troco",
+    "cor": "#C42A45",
+    "icone": "M",
+    "perguntas": [
+      { "pergunta": "Quanto é 7 x 8?", "opcoes": ["48", "56", "64", "72"], "correta": "56" },
+      { "pergunta": "Quanto é 15 + 27?", "opcoes": ["32", "42", "52", "38"], "correta": "42" },
+      { "pergunta": "Quanto é 100 ÷ 4?", "opcoes": ["20", "25", "30", "15"], "correta": "25" }
+    ]
+  },
+  {
+    "id": "portugues",
+    "nome": "Português",
+    "descricao": "Ortografia e gramática",
+    "cor": "#2E7D6B",
+    "icone": "P",
+    "perguntas": [
+      { "pergunta": "Como se escreve corretamente?", "opcoes": ["Calabresa", "Calabreza", "Kcalabresa"], "correta": "Calabresa" },
+      { "pergunta": "Qual palavra está correta?", "opcoes": ["Pizzaria", "Pizaria", "Pitsaria"], "correta": "Pizzaria" },
+      { "pergunta": "Qual é o plural de 'Pão'?", "opcoes": ["Pãos", "Pães", "Pões"], "correta": "Pães" }
+    ]
+  },
+  {
+    "id": "historia",
+    "nome": "História",
+    "descricao": "Fatos e datas",
+    "cor": "#E9B44C",
+    "icone": "H",
+    "perguntas": [
+      { "pergunta": "Quem descobriu o Brasil?", "opcoes": ["Cabral", "Colombo", "Dom Pedro", "Vasco"], "correta": "Cabral" },
+      { "pergunta": "Em que ano o Brasil foi descoberto?", "opcoes": ["1500", "1492", "1822", "1889"], "correta": "1500" },
+      { "pergunta": "Quem proclamou a Independência?", "opcoes": ["Dom Pedro I", "Dom Pedro II", "Tiradentes", "Getúlio Vargas"], "correta": "Dom Pedro I" }
+    ]
+  }
+]
