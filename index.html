@@ -30,18 +30,39 @@
 
         <section id="tela-cliente" class="tela">
             <header class="hud">
-                <div class="hud-item"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
-                <div class="hud-item hud-item-centro"><span class="hud-icone">⭐</span><span class="hud-nivel">1</span></div>
-                <div class="hud-item">Dia 1</div>
+                <div class="hud-item hud-dia"><span class="hud-icone">☀️</span>DAY <span class="hud-dia-numero">1</span></div>
+                <div class="hud-item hud-item-centro hud-pedido"><span class="hud-icone">🍕</span><span class="hud-pedido-numero">1</span></div>
+                <div class="hud-item hud-dinheiro"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
             </header>
             <div class="cena-loja">
-                <div class="janela">
-                    <div class="janela-nuvem janela-nuvem-1"></div>
-                    <div class="janela-nuvem janela-nuvem-2"></div>
-                    <div class="janela-morro"></div>
+                <div class="parede-madeira"></div>
+                <div class="piso-verde"></div>
+
+                <div class="fliperama fliperama-azul">
+                    <div class="fliperama-tela"></div>
+                    <span>GUMMY<br>GUSH</span>
                 </div>
-                <div class="quadro">🍕</div>
-                <div class="planta"><span></span><span></span><span></span><i></i></div>
+                <div class="fliperama fliperama-rosa">
+                    <div class="fliperama-tela"></div>
+                    <span>DODO<br>FACTORY</span>
+                </div>
+                <div class="cabideiro">
+                    <i></i>
+                    <span class="cabide cabide-1"></span>
+                    <span class="cabide cabide-2"></span>
+                </div>
+
+                <div class="mesa-fundo mesa-fundo-1">
+                    <div class="toalha"></div>
+                    <div class="cadeira cadeira-esquerda"></div>
+                    <div class="cadeira cadeira-direita"></div>
+                </div>
+                <div class="mesa-fundo mesa-fundo-2">
+                    <div class="toalha"></div>
+                    <div class="cadeira cadeira-esquerda"></div>
+                    <div class="cadeira cadeira-direita"></div>
+                </div>
+
                 <div class="cliente-cena">
                     <div class="balao-fala" id="balao-cliente">Carregando pedido...</div>
                     <div class="cliente" id="avatar-cliente">
@@ -54,16 +75,36 @@
                         <div class="cliente-corpo"></div>
                     </div>
                 </div>
-                <div class="balcao"></div>
+
+                <div class="balcao">
+                    <div class="objeto-balcao registradora">
+                        <div class="registradora-tela"></div>
+                        <div class="registradora-botoes"></div>
+                    </div>
+                    <div class="objeto-balcao pote-dinheiro">
+                        <div class="pote-vidro"><span>🪙</span></div>
+                    </div>
+                    <div class="objeto-balcao tabua-pizza">
+                        <div class="pizza-fatia"><span></span></div>
+                    </div>
+                    <div class="objeto-balcao molhos">
+                        <div class="pote-molho molho-amarelo"></div>
+                        <div class="pote-molho molho-verde"></div>
+                        <div class="pote-molho molho-vermelho"></div>
+                    </div>
+                    <div class="objeto-balcao tablet">
+                        <span>!</span>
+                    </div>
+                </div>
                 <button id="btn-anotar" class="btn-primario btn-balcao">Anotar pedido</button>
             </div>
         </section>
 
         <section id="tela-cozinha" class="tela">
             <header class="hud">
-                <div class="hud-item"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
-                <div class="hud-item hud-item-centro"><span class="hud-icone">⭐</span><span class="hud-nivel">1</span></div>
-                <div class="hud-item">Cozinha</div>
+                <div class="hud-item hud-dia"><span class="hud-icone">☀️</span>DAY <span class="hud-dia-numero">1</span></div>
+                <div class="hud-item hud-item-centro hud-pedido"><span class="hud-icone">🍕</span><span class="hud-pedido-numero">1</span></div>
+                <div class="hud-item hud-dinheiro"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
             </header>
             <div class="cozinha">
                 <div class="azulejo"></div>
@@ -89,9 +130,9 @@
 
         <section id="tela-forno" class="tela">
             <header class="hud">
-                <div class="hud-item"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
-                <div class="hud-item hud-item-centro"><span class="hud-icone">⭐</span><span class="hud-nivel">1</span></div>
-                <div class="hud-item">Forno</div>
+                <div class="hud-item hud-dia"><span class="hud-icone">☀️</span>DAY <span class="hud-dia-numero">1</span></div>
+                <div class="hud-item hud-item-centro hud-pedido"><span class="hud-icone">🍕</span><span class="hud-pedido-numero">1</span></div>
+                <div class="hud-item hud-dinheiro"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
             </header>
             <div class="cena-forno">
                 <div class="forno" id="forno">
@@ -109,9 +150,9 @@
 
         <section id="tela-entrega" class="tela">
             <header class="hud">
-                <div class="hud-item"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
-                <div class="hud-item hud-item-centro"><span class="hud-icone">⭐</span><span class="hud-nivel">1</span></div>
-                <div class="hud-item">Entrega</div>
+                <div class="hud-item hud-dia"><span class="hud-icone">☀️</span>DAY <span class="hud-dia-numero">1</span></div>
+                <div class="hud-item hud-item-centro hud-pedido"><span class="hud-icone">🍕</span><span class="hud-pedido-numero">1</span></div>
+                <div class="hud-item hud-dinheiro"><span class="hud-icone">🪙</span><span class="hud-moedas">10</span></div>
             </header>
             <div class="cena-entrega">
                 <div class="cliente cliente-entrega">

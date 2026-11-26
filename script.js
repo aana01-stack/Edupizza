@@ -3,6 +3,7 @@
 const ESPERA_MONTAGEM = 900;
 const TEMPO_FORNO = 2000;
 const ESPERA_ENTREGA = 700;
+const DIA_ATUAL = 1;
 
 const TIPOS_TOPPING = {
     '🍅': 'tomate',
@@ -41,7 +42,6 @@ let perguntaAtual = null;
 let filaDeClientes = [];
 let indiceAtual = 0;
 let moedas = 10;
-let nivel = 1;
 let acertou = false;
 let timerForno = null;
 
@@ -60,11 +60,14 @@ function shuffle(array) {
 }
 
 function atualizarHUD() {
+    document.querySelectorAll('.hud-dia-numero').forEach(el => {
+        el.textContent = DIA_ATUAL;
+    });
+    document.querySelectorAll('.hud-pedido-numero').forEach(el => {
+        el.textContent = indiceAtual + 1;
+    });
     document.querySelectorAll('.hud-moedas').forEach(el => {
         el.textContent = moedas;
-    });
-    document.querySelectorAll('.hud-nivel').forEach(el => {
-        el.textContent = nivel;
     });
 }
 
@@ -72,7 +75,6 @@ function iniciarTurno() {
     filaDeClientes = shuffle(bancoDePerguntas);
     indiceAtual = 0;
     moedas = 10;
-    nivel = 1;
     atualizarHUD();
     proximoCliente();
 }
@@ -85,6 +87,7 @@ function proximoCliente() {
     }
 
     perguntaAtual = filaDeClientes[indiceAtual];
+    atualizarHUD();
     balaoCliente.textContent = perguntaAtual.pergunta;
     avatarCliente.className = `cliente tipo-${(indiceAtual % 4) + 1}`;
     mostrarTela('cliente');
