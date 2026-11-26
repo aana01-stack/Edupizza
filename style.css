@@ -548,6 +548,8 @@ button {
 .pizza-toppings {
     position: absolute;
     inset: 0;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .topping {
@@ -555,11 +557,59 @@ button {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: var(--vinho);
     border: 3px solid #6f2018;
     box-shadow: inset -4px -4px 6px rgba(0, 0, 0, 0.25);
     animation: aparecer 0.25s ease-out backwards;
 }
+
+.topping::after {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.24);
+}
+
+.topping-tomate {
+    background: #d94f3d;
+    border-color: #9c2f24;
+}
+
+.topping-tomate::after { background: #ff8b6b; }
+
+.topping-queijo {
+    background: #ffe08a;
+    border-color: #d9a400;
+    border-radius: 8px;
+}
+
+.topping-queijo::after { background: #fff6c9; }
+
+.topping-cogumelo {
+    background: #d8b08c;
+    border-color: #8d6a4f;
+    border-radius: 50% 50% 35% 35%;
+}
+
+.topping-cogumelo::after {
+    inset: auto 5px 5px;
+    height: 12px;
+    border-radius: 0 0 8px 8px;
+    background: #b98e68;
+}
+
+.topping-pepperoni {
+    background: radial-gradient(circle at 35% 35%, #e35b4a 0 18%, #a32d22 19%);
+    border-color: #6f2018;
+}
+
+.topping-abacaxi {
+    background: #f4c542;
+    border-color: #c99b16;
+    border-radius: 18% 18% 45% 45%;
+}
+
+.topping-abacaxi::after { background: #ffe58a; }
 
 .pizza-pronta {
     transform: scale(1.06);

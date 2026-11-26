@@ -4,6 +4,14 @@ const ESPERA_MONTAGEM = 900;
 const TEMPO_FORNO = 2000;
 const ESPERA_ENTREGA = 700;
 
+const TIPOS_TOPPING = {
+    '🍅': 'tomate',
+    '🧀': 'queijo',
+    '🍄': 'cogumelo',
+    '🍕': 'pepperoni',
+    '🍍': 'abacaxi'
+};
+
 const telas = {
     menu: document.getElementById('tela-menu'),
     cliente: document.getElementById('tela-cliente'),
@@ -101,14 +109,15 @@ function montarCozinha() {
     opcoes.forEach((opcao, indice) => {
         const botao = document.createElement('button');
         botao.className = 'btn-ingrediente';
+        const icone = ingredientes[indice].split(' ')[0];
         const emoji = document.createElement('span');
         emoji.className = 'emoji';
-        emoji.textContent = ingredientes[indice].split(' ')[0];
+        emoji.textContent = icone;
         const rotulo = document.createElement('span');
         rotulo.className = 'rotulo';
         rotulo.textContent = opcao;
         botao.append(emoji, rotulo);
-        botao.addEventListener('click', () => verificarResposta(opcao, botao));
+        botao.addEventListener('click', () => verificarResposta(opcao, botao, icone));
         containerIngredientes.appendChild(botao);
     });
 }
@@ -119,25 +128,37 @@ function travarIngredientes() {
     });
 }
 
-function adicionarToppings() {
-    for (let i = 0; i < 10; i++) {
-        const topping = document.createElement('span');
-        topping.className = 'topping';
-        topping.style.left = `${18 + Math.random() * 190}px`;
-        topping.style.top = `${18 + Math.random() * 190}px`;
-        topping.style.animationDelay = `${i * 0.03}s`;
-        pizzaToppings.appendChild(topping);
-    }
+function adicionarToppings(tipo) {
+    const aneis = [
+        { raio: 0, quantidade: 1 },
+        { raio: 48, quantidade: 5 },
+        { raio: 82, quantidade: 7 }
+    ];
+    const rotacao = Math.random() * Math.PI * 2;
+    let ordem = 0;
+
+    aneis.forEach((anel, indiceAneis) => {
+        for (let i = 0; i < anel.quantidade; i++) {
+            const angulo = rotacao + (i * Math.PI * 2) / anel.quantidade + (indiceAneis ? Math.PI / anel.quantidade : 0);
+            const topping = document.createElement('span');
+            topping.className = `topping topping-${tipo}`;
+            topping.style.left = `${113 + Math.cos(angulo) * anel.raio - 16}px`;
+            topping.style.top = `${113 + Math.sin(angulo) * anel.raio - 16}px`;
+            topping.style.animationDelay = `${ordem * 0.045}s`;
+            pizzaToppings.appendChild(topping);
+            ordem++;
+        }
+    });
 }
 
-function verificarResposta(opcaoEscolhida, botaoClicado) {
+function verificarResposta(opcaoEscolhida, botaoClicado, icone) {
     travarIngredientes();
     acertou = opcaoEscolhida === perguntaAtual.correta;
 
     if (acertou) {
         botaoClicado.classList.add('correto');
         pizza.classList.add('pizza-pronta');
-        adicionarToppings();
+        adicionarToppings(TIPOS_TOPPING[icone] || 'pepperoni');
         feedback.textContent = 'Delícia! Pizza pronta para o forno.';
         feedback.style.color = '#2e7d32';
         moedas += 10;
