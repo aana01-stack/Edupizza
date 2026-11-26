@@ -432,6 +432,15 @@ button {
     transform: translateX(-50%);
 }
 
+.prato::after {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 3px solid #d98b2b;
+    border-radius: 50%;
+    background: conic-gradient(from -24deg, transparent 0deg 70deg, #d94f3d 70deg 360deg);
+}
+
 .cadeira {
     position: absolute;
     top: -6px;
@@ -440,6 +449,17 @@ button {
     background: #c0392b;
     border: 4px solid #7f1d1d;
     border-radius: 10px 10px 4px 4px;
+}
+
+.cadeira::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 8px;
+    right: 8px;
+    height: 26px;
+    border-radius: 4px;
+    background: repeating-linear-gradient(90deg, #a93226 0 6px, #7f1d1d 6px 10px);
 }
 
 .cadeira-esquerda { left: -30px; }
@@ -513,6 +533,31 @@ button {
     border-radius: 46% 46% 48% 48%;
 }
 
+.cliente-orelha {
+    position: absolute;
+    top: 42px;
+    width: 18px;
+    height: 24px;
+    background: #f6c9a0;
+    border: 4px solid #98643f;
+    border-radius: 50%;
+}
+
+.cliente-orelha-esquerda { left: -12px; }
+.cliente-orelha-direita { right: -12px; }
+
+.cliente-sobrancelha {
+    position: absolute;
+    top: 29px;
+    width: 18px;
+    height: 5px;
+    background: #5b3a29;
+    border-radius: 3px;
+}
+
+.cliente-sobrancelha-esquerda { left: 17px; transform: rotate(-8deg); }
+.cliente-sobrancelha-direita { right: 17px; transform: rotate(8deg); }
+
 .cliente-olho {
     position: absolute;
     top: 40px;
@@ -522,8 +567,31 @@ button {
     background: var(--tinta);
 }
 
+.cliente-olho::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #fff;
+}
+
 .cliente-olho-esquerdo { left: 20px; }
 .cliente-olho-direito { right: 20px; }
+
+.cliente-bochecha {
+    position: absolute;
+    bottom: 24px;
+    width: 16px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(231, 111, 81, 0.45);
+}
+
+.cliente-bochecha-esquerda { left: 10px; }
+.cliente-bochecha-direita { right: 10px; }
 
 .cliente-boca {
     position: absolute;
@@ -563,6 +631,18 @@ button {
 .cliente-corpo::before { left: -18px; transform: rotate(12deg); }
 .cliente-corpo::after { right: -18px; transform: rotate(-12deg); }
 
+.cliente-gola {
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    width: 46px;
+    height: 22px;
+    background: #fff7e8;
+    border: 4px solid #9c4b32;
+    border-radius: 0 0 18px 18px;
+    transform: translateX(-50%);
+}
+
 .balcao {
     position: absolute;
     z-index: 10;
@@ -580,8 +660,17 @@ button {
     box-shadow: 0 -8px 18px var(--sombra);
 }
 
+.balcao::before {
+    content: '';
+    position: absolute;
+    inset: 12px 0 0;
+    background: repeating-linear-gradient(90deg, rgba(150, 105, 60, 0.08) 0 1px, transparent 1px 70px);
+    pointer-events: none;
+}
+
 .objeto-balcao {
     position: relative;
+    z-index: 1;
     flex: 0 0 auto;
 }
 
@@ -604,6 +693,20 @@ button {
     background: #80a2b0;
     border: 4px solid #4f6d78;
     border-radius: 6px;
+}
+
+.registradora::before {
+    content: '';
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    width: 34px;
+    height: 26px;
+    background: #fff;
+    border: 4px solid #b85c0b;
+    border-radius: 4px;
+    box-shadow: inset 0 8px 0 #f3e5c8;
+    transform: translateX(-50%);
 }
 
 .registradora-tela {
@@ -660,7 +763,21 @@ button {
 .pote-vidro::before { bottom: 14px; left: 10px; }
 .pote-vidro::after { bottom: 26px; right: 10px; }
 
+.pote-dinheiro::before {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: -10px;
+    left: 8px;
+    right: 8px;
+    height: 12px;
+    background: #dfe6e9;
+    border: 4px solid #9fb3bd;
+    border-radius: 6px;
+}
+
 .tabua-pizza {
+    position: relative;
     width: 170px;
     height: 110px;
     display: flex;
@@ -670,6 +787,20 @@ button {
     border-radius: 50%;
     background: repeating-linear-gradient(45deg, #d7a366 0 14px, #c68c50 14px 28px);
     transform: rotate(-4deg);
+}
+
+.tabua-pizza::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -16px;
+    width: 28px;
+    height: 14px;
+    border: 6px solid var(--madeira-escura);
+    border-left: 0;
+    border-radius: 0 12px 12px 0;
+    background: #d7a366;
+    transform: translateY(-50%);
 }
 
 .pizza-fatia {
@@ -701,11 +832,35 @@ button {
 }
 
 .pote-molho {
+    position: relative;
     width: 38px;
     height: 64px;
     border: 5px solid rgba(255, 255, 255, 0.9);
     border-radius: 8px 8px 10px 10px;
     box-shadow: inset 0 -26px 0 var(--cor), 0 4px 8px rgba(0, 0, 0, 0.18);
+}
+
+.pote-molho::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -4px;
+    right: -4px;
+    height: 12px;
+    background: var(--cor);
+    border: 4px solid rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+}
+
+.pote-molho::after {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 5px;
+    right: 5px;
+    height: 12px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.85);
 }
 
 .molho-amarelo { --cor: #f4c542; }
