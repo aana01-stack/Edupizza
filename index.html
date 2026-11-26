@@ -121,9 +121,10 @@
                     <p id="texto-pedido-cozinha">Quanto é...</p>
                 </div>
                 <div class="estacao-montagem">
+                    <p id="instrucao-montagem" class="instrucao-montagem">Arraste um ingrediente até a pizza</p>
                     <div class="mesa">
                         <div class="tabua">
-                            <div id="pizza" class="pizza pizza-vazia">
+                            <div id="pizza" class="pizza pizza-vazia" role="button" tabindex="0" aria-label="Pizza: solte o ingrediente aqui">
                                 <div class="pizza-molho"></div>
                                 <div class="pizza-queijo"></div>
                                 <div class="pizza-toppings"></div>
@@ -187,6 +188,7 @@
             </div>
         </section>
     </div>
+    <div id="ingrediente-fantasma" class="ingrediente-fantasma" aria-hidden="true"></div>
     <script src="perguntas.js"></script>
     <script src="script.js"></script>
 </body>
