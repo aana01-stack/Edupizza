@@ -3,100 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduPizzaria - Estilo Papa's</title>
+    <title>EduPizzaria - Good Pizza Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* ================= RESET E ESTRUTURA ================= */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Comic Sans MS', cursive, sans-serif; user-select: none; }
-        body { background-color: #333; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        /* ================= RESET E ESTILO GERAL ================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; user-select: none; }
+        body { background-color: #fdf5e6; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; color: #4a3b32; }
 
-        /* ================= TELA INICIAL (MENU DE MATÉRIAS) ================= */
-        #tela-selecao {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background-color: #FBF3E4;
-            background-image: radial-gradient(circle at 1px 1px, rgba(43,27,24,.05) 1px, transparent 0);
-            background-size: 22px 22px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.5s;
-        }
-        .logo-inicial h1 { font-size: 60px; color: #d32f2f; text-shadow: 4px 4px 0 #fff, 6px 6px 0 #000; background: white; padding: 20px 40px; border-radius: 50%; border: 8px solid #d32f2f; transform: rotate(-5deg); display: inline-block; }
-        .logo-inicial p { color: #7A6155; font-size: 18px; margin-top: 15px; font-weight: bold; text-align: center; }
+        /* Fundo de papel texturizado (simulado com gradiente) */
+        .bg-paper { background-color: #fdf5e6; background-image: radial-gradient(#e0d6c8 1px, transparent 1px); background-size: 20px 20px; }
+
+        /* Container Principal */
+        #jogo { width: 100%; max-width: 1000px; height: 95vh; display: flex; flex-direction: column; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: white; position: relative; border: 4px solid #e0d6c8; }
+
+        /* ================= MENU DE MATÉRIAS (ESTILO CARDÁPIO) ================= */
+        #tela-selecao { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #fff8e7; }
+        .titulo-menu { font-size: 50px; font-weight: 900; color: #d35400; text-shadow: 2px 2px 0 #f39c12; margin-bottom: 10px; text-align: center; }
+        .subtitulo-menu { font-size: 18px; color: #7f8c8d; margin-bottom: 40px; }
         
-        .grid-fases { display: flex; gap: 20px; margin-top: 40px; }
-        .tile { background: white; border: 1px solid rgba(43,27,24,.14); border-radius: 14px; padding: 20px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; width: 250px; }
-        .tile:hover { transform: translateY(-5px); box-shadow: 0 15px 30px -20px rgba(43,27,24,0.5); border-color: rgba(43,27,24,.28); }
-        .tile__sticker { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 24px; font-weight: bold; box-shadow: inset 0 0 0 4px rgba(255,255,255,0.3); }
-        .tile__info { display: flex; flex-direction: column; }
-        .tile__name { font-size: 22px; font-weight: bold; color: #2B1B18; }
-        .tile__meta { font-size: 14px; color: #7A6155; margin-top: 4px; }
+        .grid-fases { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; }
+        .tile { background: white; border: 3px solid #e0d6c8; border-radius: 20px; padding: 25px; width: 260px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .tile:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: #d35400; }
+        .tile__icone { width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 36px; color: white; margin-bottom: 15px; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .tile__name { font-size: 22px; font-weight: 700; color: #4a3b32; }
+        .tile__meta { font-size: 14px; color: #95a5a6; margin-top: 5px; }
 
         /* ================= JOGO PRINCIPAL ================= */
-        .jogo-principal { display: flex; flex-direction: column; height: 100vh; }
-        header { background: #e0e0e0; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 5px solid #a0a0a0; z-index: 10; }
-        header h1 { color: #d32f2f; font-size: 24px; }
-        .stats { background: #fff; padding: 5px 15px; border-radius: 20px; font-weight: bold; border: 2px solid #ccc; }
-        .btn-voltar { background: #d32f2f; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-left: 10px; }
-
-        .game-layout { display: grid; grid-template-columns: 130px 1fr 260px; height: calc(100vh - 60px); gap: 10px; padding: 10px; background: #222; }
+        .jogo-principal { display: flex; flex-direction: column; height: 100%; width: 100%; }
         
-        /* Sidebar (Ingredientes) */
-        .sidebar { background: #444; border-radius: 10px; padding: 15px 10px; display: flex; flex-direction: column; gap: 15px; align-items: center; overflow-y: auto; }
-        .btn-ingrediente { width: 80px; height: 80px; border-radius: 50%; background: #ffca28; border: 4px solid #ff8f00; box-shadow: 0 6px 0 #b26500; cursor: pointer; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: 0.1s; color: #333; text-align: center; padding: 5px; }
-        .btn-ingrediente:active { transform: translateY(6px); box-shadow: none; }
-        .btn-ingrediente:disabled { background: #888; border-color: #666; box-shadow: 0 6px 0 #444; cursor: not-allowed; }
+        /* Top Bar (Estilo Good Pizza) */
+        header { background: #f39c12; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; color: white; border-bottom: 4px solid #d35400; z-index: 10; }
+        header h1 { font-size: 24px; font-weight: 900; }
+        .stats { background: #fff; color: #d35400; padding: 5px 15px; border-radius: 20px; font-weight: bold; border: 2px solid #d35400; }
+        .btn-voltar { background: #e74c3c; color: white; border: none; padding: 5px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-left: 10px; border-bottom: 3px solid #c0392b; }
+        .btn-voltar:active { transform: translateY(2px); border-bottom: none; }
 
-        /* Workspace (Mesa/Lobby) */
-        .workspace { border-radius: 15px; display: flex; justify-content: center; align-items: center; position: relative; border: 8px solid #555; overflow: hidden; }
-        .estacao { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+        /* Layout Principal do Jogo */
+        .game-layout { display: grid; grid-template-columns: 1fr; height: 100%; position: relative; background-color: #ecf0f1; overflow: hidden; }
+        
+        /* Telas do Jogo (Estações) */
+        .estacao { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; flex-direction: column; justify-content: center; align-items: center; }
         .estacao.ativa { display: flex; }
 
-        /* Estação 1: Lobby */
-        .lobby { width: 100%; height: 100%; display: flex; flex-direction: column; position: relative; background-color: #8FBC8F; }
-        .parede-comandas { position: absolute; top: 10px; left: 0; width: 100%; height: 100px; display: flex; justify-content: center; gap: 30px; }
-        .comanda-parede { width: 30px; height: 60px; background: white; border: 1px solid #ccc; border-top: 4px solid #d32f2f; }
-        .chao { position: absolute; bottom: 100px; left: 0; width: 100%; height: 150px; background-image: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%); background-size: 40px 40px; background-position: 0 0, 0 20px, 20px -20px, -20px 0px; background-color: #a9a9a9; }
+        /* --- TELA 1: LOBBY (A Pizzaria) --- */
+        .lobby { width: 100%; height: 100%; background: #ffeaa7; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
+        /* Fundo do Balcão */
+        .fundo-lobby { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, #fff3e0 60%, #d7ccc8 60%); }
         
-        .personagem { position: absolute; bottom: 100px; width: 60px; height: 120px; z-index: 2; }
-        .cabeca { width: 40px; height: 40px; background: #f1c27d; border-radius: 50%; position: absolute; top: 0; left: 10px; border: 2px solid #8d5524; z-index: 2;}
-        .corpo { width: 60px; height: 60px; position: absolute; bottom: 0; left: 0; border-radius: 10px 10px 0 0; }
-        
-        .jogador { left: 20px; bottom: 80px; z-index: 5; }
-        .jogador .corpo { background: #d32f2f; width: 50px; left: 5px; height: 50px; }
-        .jogador .bone { width: 50px; height: 20px; background: #1976d2; position: absolute; top: -10px; left: 5px; border-radius: 10px 10px 0 0; border: 2px solid #0d47a1; z-index: 3;}
+        /* Cliente (Estilo flat design) */
+        .cliente-area { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; z-index: 2; }
+        .cliente-personagem { width: 120px; height: 160px; background: #f8c291; border-radius: 50% 50% 10% 10%; position: relative; border: 3px solid #e1b12c; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .cliente-personagem::before { content: ''; position: absolute; top: 30px; left: 25px; width: 15px; height: 15px; background: #4a3b32; border-radius: 50%; box-shadow: 45px 0 0 #4a3b32; } /* Olhos */
+        .cliente-personagem::after { content: ''; position: absolute; top: 60px; left: 40px; width: 40px; height: 15px; border-bottom: 4px solid #4a3b32; border-radius: 50%; } /* Sorriso */
 
-        .cliente { left: 50%; transform: translateX(-50%); bottom: 100px; display: none; cursor: pointer; }
-        .cliente .corpo { background: #fbc02d; }
+        /* Balão de Fala */
+        .balao-fala { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); background: white; border: 3px solid #4a3b32; padding: 15px 25px; border-radius: 20px; font-weight: bold; font-size: 18px; white-space: nowrap; box-shadow: 0 5px 0 rgba(0,0,0,0.1); }
+        .balao-fala::after { content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); border-width: 12px 12px 0; border-style: solid; border-color: #4a3b32 transparent transparent transparent; }
         
-        .balcao { position: absolute; bottom: 0; width: 100%; height: 100px; background: #5d4037; border-top: 10px solid #3e2723; z-index: 10; display: flex; justify-content: center; align-items: center; }
-        .btn-open { background: #4CAF50; color: white; font-size: 24px; font-weight: bold; padding: 15px 40px; border: 4px solid #2E7D32; border-radius: 10px; cursor: pointer; box-shadow: 0 6px 0 #1b5e20; text-transform: uppercase; letter-spacing: 2px; transition: 0.1s; }
+        /* Balcão e Botões */
+        .balcao { width: 100%; height: 150px; background: #d35400; border-top: 8px solid #a04000; display: flex; justify-content: center; align-items: center; z-index: 5; }
+        .btn-open { background: #27ae60; color: white; font-size: 24px; font-weight: 900; padding: 15px 50px; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 6px 0 #1e8449; transition: 0.1s; }
         .btn-open:active { transform: translateY(6px); box-shadow: none; }
-        .comanda-fisica { display: none; width: 80px; height: 100px; background: white; border-left: 5px solid #d32f2f; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer; animation: flutuar 2s infinite ease-in-out; z-index: 15; justify-content: center; align-items: center; }
-        .comanda-fisica:hover { transform: translateX(-50%) scale(1.1); }
-        @keyframes flutuar { 0%, 100% { top: -50px; } 50% { top: -60px; } }
+        .btn-ok { display: none; background: #3498db; color: white; font-size: 20px; font-weight: bold; padding: 15px 40px; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 6px 0 #2980b9; margin-top: 20px; }
+        .btn-ok:active { transform: translateY(6px); box-shadow: none; }
 
-        /* Estações de Cozinha (Forno/Corte) */
-        .pizza-area { width: 250px; height: 250px; background-color: #f9e79f; border-radius: 50%; box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 12px solid #e67e22; position: relative; display: flex; justify-content: center; align-items: center; transition: 0.5s; background-image: radial-gradient(circle, #f9e79f 60%, #f39c12 100%); }
-        .pizza-area.dourada { background-image: radial-gradient(circle, #f39c12 60%, #d35400 100%); }
-        .pizza-area.queimada { background-image: radial-gradient(circle, #333 60%, #111 100%); border-color: #111; }
-        .linha-corte { position: absolute; background: rgba(255,255,255,0.8); height: 100%; width: 4px; top: 0; left: 50%; transform: translateX(-50%); }
-        .linha-corte.horizontal { width: 100%; height: 4px; top: 50%; left: 0; transform: translateY(-50%); }
-        .btn-acao { background: #4CAF50; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; box-shadow: 0 5px 0 #2E7D32; cursor: pointer; margin-top: 20px; font-weight: bold; transition: 0.1s; z-index: 20; }
-        .btn-acao:active { transform: translateY(5px); box-shadow: none; }
-        .btn-acao:disabled { background: #888; box-shadow: 0 5px 0 #555; cursor: not-allowed; }
+        /* --- TELA 2: COZINHA (MONTAGEM E FORNO) --- */
+        .cozinha { width: 100%; height: 100%; background: #f5f6fa; display: flex; flex-direction: column; position: relative; }
+        
+        /* Área Superior: Ingredientes */
+        .bandeja-ingredientes { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; padding: 15px; background: #fff; border-bottom: 3px solid #dcdde1; }
+        .caixa-ingrediente { background: #f1f2f6; border: 3px solid #dcdde1; border-radius: 10px; padding: 10px; cursor: pointer; transition: 0.2s; text-align: center; font-weight: bold; color: #4a3b32; }
+        .caixa-ingrediente:hover { background: #eccc68; border-color: #f1c40f; }
+        .caixa-ingrediente:disabled { opacity: 0.5; cursor: not-allowed; }
+        .caixa-ingrediente.selecionado { background: #a2d9ce; border-color: #1abc9c; }
 
-        /* Comanda Direita */
-        .ticket { background: #fff; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; border-left: 8px solid #e91e63; box-shadow: -5px 5px 15px rgba(0,0,0,0.3); }
-        .ticket h2 { font-size: 20px; color: #333; margin-bottom: 15px; border-bottom: 2px dashed #ccc; padding-bottom: 10px; text-align: left; }
-        .ticket-pedido { font-size: 18px; color: #d32f2f; font-weight: bold; line-height: 1.4; }
+        /* Área Central: Mesa e Pizza */
+        .mesa-trabalho { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; background: #fff3e0; }
+        
+        /* A Pizza (Estilo Good Pizza) */
+        .pizza { width: 300px; height: 300px; background-color: #f1c40f; border-radius: 50%; border: 8px solid #d35400; box-shadow: 0 10px 20px rgba(0,0,0,0.2); position: relative; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
+        
+        /* Ingredientes Visuais (CSS) */
+        .topping { position: absolute; width: 20px; height: 20px; border-radius: 50%; background: #c0392b; box-shadow: inset -2px -2px 5px rgba(0,0,0,0.3); }
+
+        /* Forno (Estilo Good Pizza) */
+        .forno-maquina { width: 400px; height: 300px; background: #bdc3c7; border-radius: 20px; border: 5px solid #95a5a6; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .forno-janela { width: 320px; height: 120px; background: #2c3e50; border-radius: 10px; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .forno-pizza { width: 200px; height: 200px; background-color: #f1c40f; border-radius: 50%; border: 5px solid #d35400; transform: translateY(60px); transition: 0.3s; }
+        
+        /* Botões de Ação */
+        .btn-acao { background: #27ae60; color: white; font-size: 18px; font-weight: bold; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 6px 0 #1e8449; margin-top: 20px; transition: 0.1s; z-index: 20; }
+        .btn-acao:active { transform: translateY(6px); box-shadow: none; }
+        .btn-acao:disabled { background: #bdc3c7; box-shadow: 0 6px 0 #95a5a6; cursor: not-allowed; }
+
+        /* Barra de Progresso do Forno */
+        .barra-container { width: 60%; height: 20px; background: #ecf0f1; border: 3px solid #bdc3c7; border-radius: 10px; margin-top: 20px; overflow: hidden; }
+        .barra-progresso { width: 0%; height: 100%; background: #2ecc71; transition: width 0.1s linear, background-color 0.3s; }
+
+        /* Comanda Lateral */
+        .painel-comanda { position: absolute; top: 20px; right: 20px; width: 260px; background: white; border: 3px solid #e0d6c8; border-radius: 15px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 50; }
+        .painel-comanda h3 { font-size: 18px; color: #d35400; margin-bottom: 10px; border-bottom: 2px dashed #e0d6c8; padding-bottom: 5px; }
+        .painel-comanda p { font-size: 16px; font-weight: bold; color: #4a3b32; line-height: 1.4; }
     </style>
 </head>
-<body>
+<body class="bg-paper">
 
     <!-- TELA DE SELEÇÃO DE MATÉRIAS -->
     <div id="tela-selecao">
-        <div class="logo-inicial">
-            <h1>EduPizzaria</h1>
-            <p>Aprender nunca foi tão saboroso!</p>
-        </div>
+        <h1 class="titulo-menu">EduPizzaria</h1>
+        <p class="subtitulo-menu">Escolha o que deseja estudar hoje.</p>
         <div class="grid-fases" id="grid-fases">
             <!-- Cartões gerados via JS -->
         </div>
@@ -113,79 +128,81 @@
         </header>
 
         <div class="game-layout">
-            <div class="sidebar" id="sidebar-ingredientes"></div>
+            
+            <!-- TELA 1: LOBBY -->
+            <div id="estacao-pedido" class="estacao ativa">
+                <div class="lobby">
+                    <div class="fundo-lobby"></div>
+                    
+                    <div class="cliente-area" id="cliente-area" style="display: none;">
+                        <div class="balao-fala" id="balao-fala">Quero uma pizza com a resposta para: 7x8</div>
+                        <div class="cliente-personagem"></div>
+                    </div>
 
-            <div class="workspace">
-                <!-- Estação 1: Pedido (Lobby) -->
-                <div id="estacao-pedido" class="estacao ativa">
-                    <div class="lobby">
-                        <div class="parede-comandas">
-                            <div class="comanda-parede"></div>
-                            <div class="comanda-parede"></div>
-                            <div class="comanda-parede"></div>
-                        </div>
-                        <div class="chao"></div>
-                        
-                        <div class="personagem jogador">
-                            <div class="bone"></div>
-                            <div class="cabeca"></div>
-                            <div class="corpo"></div>
-                        </div>
-                        
-                        <div class="personagem cliente" id="cliente-na-fila" onclick="atenderCliente()">
-                            <div class="cabeca"></div>
-                            <div class="corpo"></div>
-                        </div>
+                    <div class="balcao">
+                        <button id="btn-open" class="btn-open" onclick="abrirPizzaria()">ABRIR</button>
+                        <button id="btn-atender" class="btn-ok" onclick="pegarComanda()">Anotar Pedido</button>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="balcao">
-                            <button id="btn-open" class="btn-open" onclick="abrirPizzaria()">OPEN</button>
-                            <div class="comanda-fisica" id="comanda-fisica" onclick="pegarComanda()">
-                                <span style="font-weight: bold; color: #d32f2f;">PEDIDO</span>
+            <!-- TELA 2: COZINHA (Montagem) -->
+            <div id="estacao-montagem" class="estacao">
+                <div class="cozinha">
+                    <!-- Painel de Comanda -->
+                    <div class="painel-comanda">
+                        <h3>Pedido</h3>
+                        <p id="texto-pedido-cozinha">...</p>
+                    </div>
+
+                    <!-- Bandeja de Ingredientes (Botões de Resposta) -->
+                    <div class="bandeja-ingredientes" id="bandeja-ingredientes">
+                        <!-- Botões gerados via JS -->
+                    </div>
+
+                    <!-- Mesa de Trabalho -->
+                    <div class="mesa-trabalho">
+                        <div class="pizza" id="pizza-montagem"></div>
+                        <button class="btn-acao" onclick="irParaForno()" id="btn-montagem-feita" style="display:none; position: absolute; bottom: 20px; right: 20px;">Assar Pizza</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TELA 3: FORNO -->
+            <div id="estacao-forno" class="estacao">
+                <div class="cozinha">
+                    <div class="mesa-trabalho">
+                        <div class="forno-maquina">
+                            <div class="forno-janela">
+                                <div class="forno-pizza" id="pizza-forno"></div>
                             </div>
+                            <div class="barra-container">
+                                <div id="barra-forno" class="barra-progresso"></div>
+                            </div>
+                            <button class="btn-acao" id="btn-forno" onclick="acionarForno()">Ligar Forno</button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Estação 2: Montagem -->
-                <div id="estacao-montagem" class="estacao">
-                    <div class="pizza-area" id="pizza-montagem"></div>
-                    <button class="btn-acao" onclick="irParaForno()" id="btn-montagem-feita" style="display:none;">Ir para o Forno</button>
-                </div>
-
-                <!-- Estação 3: Forno -->
-                <div id="estacao-forno" class="estacao">
-                    <div class="forno">
-                        <div class="pizza-area" id="pizza-forno"></div>
-                    </div>
-                    <div class="barra-container">
-                        <div id="barra-forno" class="barra-progresso"></div>
-                    </div>
-                    <button class="btn-acao" id="btn-forno" onclick="acionarForno()">Colocar no Forno</button>
-                </div>
-
-                <!-- Estação 4: Corte -->
-                <div id="estacao-corte" class="estacao">
-                    <div class="pizza-area">
-                        <div class="linha-corte"></div>
-                        <div class="linha-corte horizontal"></div>
-                    </div>
-                    <button class="btn-acao" onclick="entregarPizza()">Entregar Pedido</button>
+            <!-- TELA 4: ENTREGA -->
+            <div id="estacao-entrega" class="estacao">
+                <div class="lobby" style="justify-content: center; align-items: center;">
+                    <h2 style="font-size: 36px; color: #27ae60; margin-bottom: 20px;">Pizza Entregue!</h2>
+                    <p style="font-size: 20px; margin-bottom: 30px;">+10 Moedas</p>
+                    <button class="btn-acao" onclick="proximoCliente()">Próximo Cliente</button>
                 </div>
             </div>
 
-            <div class="ticket">
-                <h2>Comanda</h2>
-                <div class="ticket-pedido" id="texto-pedido">Aguardando...</div>
-                <p style="font-size: 12px; color: #888; margin-top: auto;">Status: <span id="status-ticket">Aguardando...</span></p>
-            </div>
         </div>
     </div>
 
     <script>
+        // ================= BANCO DE DADOS =================
         const FASES = [
             {
                 id: "matematica", nome: "Matemática", descricao: "Contas e troco",
-                cor: "#C42A45", icone: "M",
+                cor: "#e74c3c", icone: "M",
                 perguntas: [
                     { pergunta: "Quanto é 7 x 8?", opcoes: ["48", "56", "64", "72"], correta: "56" },
                     { pergunta: "Quanto é 15 + 27?", opcoes: ["32", "42", "52", "38"], correta: "42" },
@@ -194,7 +211,7 @@
             },
             {
                 id: "portugues", nome: "Português", descricao: "Ortografia e gramática",
-                cor: "#2E7D6B", icone: "P",
+                cor: "#27ae60", icone: "P",
                 perguntas: [
                     { pergunta: "Como se escreve corretamente?", opcoes: ["Calabresa", "Calabreza", "Kcalabresa"], correta: "Calabresa" },
                     { pergunta: "Qual palavra está correta?", opcoes: ["Pizzaria", "Pizaria", "Pitsaria"], correta: "Pizzaria" },
@@ -207,40 +224,41 @@
         let moedas = 0;
         let tempoForno = 0;
         let intervalForno = null;
-        let pizzariaAberta = false;
         let listaPerguntasAtual = [];
         let indicePerguntaAtual = 0;
 
+        // Elementos DOM
         const ui = {
-            sidebar: document.getElementById('sidebar-ingredientes'),
-            textoPedido: document.getElementById('texto-pedido'),
+            gridFases: document.getElementById('grid-fases'),
+            jogoContainer: document.getElementById('jogo-container'),
+            telaSelecao: document.getElementById('tela-selecao'),
             moedas: document.getElementById('moedas'),
+            balaoFala: document.getElementById('balao-fala'),
+            clienteArea: document.getElementById('cliente-area'),
+            btnOpen: document.getElementById('btn-open'),
+            btnAtender: document.getElementById('btn-atender'),
+            bandejaIngredientes: document.getElementById('bandeja-ingredientes'),
             pizzaMontagem: document.getElementById('pizza-montagem'),
+            textoPedidoCozinha: document.getElementById('texto-pedido-cozinha'),
+            btnMontagemFeita: document.getElementById('btn-montagem-feita'),
             pizzaForno: document.getElementById('pizza-forno'),
             barraForno: document.getElementById('barra-forno'),
-            btnForno: document.getElementById('btn-forno'),
-            statusTicket: document.getElementById('status-ticket'),
-            btnOpen: document.getElementById('btn-open'),
-            comandaFisica: document.getElementById('comanda-fisica'),
-            clienteNaFila: document.getElementById('cliente-na-fila')
+            btnForno: document.getElementById('btn-forno')
         };
 
-        // Criar Menu de Fases
+        // ================= LÓGICA DO MENU =================
         function criarMenu() {
-            const grid = document.getElementById('grid-fases');
-            grid.innerHTML = '';
+            ui.gridFases.innerHTML = '';
             FASES.forEach(fase => {
                 const tile = document.createElement('div');
                 tile.className = 'tile';
                 tile.onclick = () => iniciarFase(fase.id);
                 tile.innerHTML = `
-                    <div class="tile__sticker" style="background-color: ${fase.cor};">${fase.icone}</div>
-                    <div class="tile__info">
-                        <span class="tile__name">${fase.nome}</span>
-                        <span class="tile__meta">${fase.descricao}</span>
-                    </div>
+                    <div class="tile__icone" style="background-color: ${fase.cor};">${fase.icone}</div>
+                    <div class="tile__name">${fase.nome}</div>
+                    <div class="tile__meta">${fase.descricao}</div>
                 `;
-                grid.appendChild(tile);
+                ui.gridFases.appendChild(tile);
             });
         }
 
@@ -251,134 +269,153 @@
             moedas = 0;
             ui.moedas.innerText = moedas;
 
-            document.getElementById('tela-selecao').style.display = 'none';
-            document.getElementById('jogo-container').style.display = 'flex';
+            ui.telaSelecao.style.display = 'none';
+            ui.jogoContainer.style.display = 'flex';
 
-            pizzariaAberta = false;
+            // Reseta estado
+            ui.clienteArea.style.display = 'none';
             ui.btnOpen.style.display = 'block';
-            ui.clienteNaFila.style.display = 'none';
-            ui.comandaFisica.style.display = 'none';
+            ui.btnAtender.style.display = 'none';
             ui.pizzaMontagem.innerHTML = '';
-            ui.pizzaForno.className = 'pizza-area';
-            ui.barraForno.style.width = '0%';
-            ui.btnForno.disabled = false;
-            ui.btnForno.innerText = "Colocar no Forno";
-            ui.textoPedido.innerText = "Aguardando...";
             
             mudarEstacao('estacao-pedido');
         }
 
         function voltarAoMenu() {
-            document.getElementById('tela-selecao').style.display = 'flex';
-            document.getElementById('jogo-container').style.display = 'none';
+            ui.telaSelecao.style.display = 'flex';
+            ui.jogoContainer.style.display = 'none';
             if(intervalForno) clearInterval(intervalForno);
         }
 
+        // ================= LÓGICA DO JOGO =================
         function abrirPizzaria() {
-            if (pizzariaAberta) return;
-            pizzariaAberta = true;
             ui.btnOpen.style.display = 'none';
-            ui.clienteNaFila.style.display = 'block'; 
-        }
-
-        function atenderCliente() {
             if (indicePerguntaAtual >= listaPerguntasAtual.length) {
-                ui.textoPedido.innerText = "Fim da fase! Todos os pedidos foram entregues.";
-                ui.clienteNaFila.style.display = 'none';
+                alert("Você concluiu todos os pedidos desta matéria!");
+                voltarAoMenu();
                 return;
             }
+            
             perguntaAtual = listaPerguntasAtual[indicePerguntaAtual];
-            ui.textoPedido.innerText = `Quero uma pizza com a resposta para: ${perguntaAtual.pergunta}`;
-            ui.statusTicket.innerText = "Aguardando...";
-            ui.clienteNaFila.style.display = 'none';
-            ui.comandaFisica.style.display = 'flex';
+            ui.balaoFala.innerText = `Quero uma pizza com a resposta para: ${perguntaAtual.pergunta}`;
+            ui.clienteArea.style.display = 'flex';
+            ui.btnAtender.style.display = 'block';
         }
 
         function pegarComanda() {
-            ui.comandaFisica.style.display = 'none';
-            irParaMontagem();
-        }
-
-        function irParaMontagem() {
-            ui.sidebar.innerHTML = '';
+            ui.clienteArea.style.display = 'none';
+            ui.btnAtender.style.display = 'none';
+            
+            // Preenche a bandeja de ingredientes
+            ui.bandejaIngredientes.innerHTML = '';
+            ui.textoPedidoCozinha.innerText = perguntaAtual.pergunta;
+            
             perguntaAtual.opcoes.forEach(opcao => {
                 const btn = document.createElement('button');
-                btn.className = 'btn-ingrediente';
+                btn.className = 'caixa-ingrediente';
                 btn.innerText = opcao;
                 btn.onclick = () => verificarIngrediente(opcao, btn);
-                ui.sidebar.appendChild(btn);
+                ui.bandejaIngredientes.appendChild(btn);
             });
+
+            // Limpa pizza
+            ui.pizzaMontagem.innerHTML = '';
+            ui.pizzaMontagem.style.backgroundColor = '#f1c40f'; // Reset cor base
+            ui.btnMontagemFeita.style.display = 'none';
+
             mudarEstacao('estacao-montagem');
         }
 
         function verificarIngrediente(opcao, btn) {
             if (opcao === perguntaAtual.correta) {
-                btn.style.backgroundColor = '#4CAF50';
-                btn.style.color = 'white';
-                
-                const bolinha = document.createElement('div');
-                bolinha.style.width = '30px';
-                bolinha.style.height = '30px';
-                bolinha.style.backgroundColor = '#d32f2f';
-                bolinha.style.borderRadius = '50%';
-                bolinha.style.position = 'absolute';
-                bolinha.style.top = Math.random() * 150 + 'px';
-                bolinha.style.left = Math.random() * 150 + 'px';
-                ui.pizzaMontagem.appendChild(bolinha);
-
-                document.querySelectorAll('.btn-ingrediente').forEach(b => b.disabled = true);
-                document.getElementById('btn-montagem-feita').style.display = 'block';
-            } else {
-                btn.style.backgroundColor = '#d32f2f';
+                btn.classList.add('selecionado');
                 btn.disabled = true;
-                ui.textoPedido.innerText = "Ingrediente errado! Tente novamente.";
+                
+                // Adiciona as bolinhas de ingrediente na pizza
+                for(let i=0; i<8; i++) {
+                    const topping = document.createElement('div');
+                    topping.className = 'topping';
+                    // Posicionamento aleatório dentro do círculo
+                    const angle = Math.random() * Math.PI * 2;
+                    const radius = Math.random() * 120;
+                    const x = 150 + Math.cos(angle) * radius - 10;
+                    const y = 150 + Math.sin(angle) * radius - 10;
+                    
+                    topping.style.left = `${x}px`;
+                    topping.style.top = `${y}px`;
+                    ui.pizzaMontagem.appendChild(topping);
+                }
+
+                // Desabilita os outros
+                document.querySelectorAll('.caixa-ingrediente').forEach(b => b.disabled = true);
+                ui.btnMontagemFeita.style.display = 'block';
+            } else {
+                btn.style.backgroundColor = '#e74c3c';
+                btn.style.color = 'white';
+                btn.disabled = true;
             }
         }
 
         function irParaForno() {
             mudarEstacao('estacao-forno');
-            document.getElementById('btn-montagem-feita').style.display = 'none';
+            ui.btnMontagemFeita.style.display = 'none';
+            
+            // Reseta o forno
+            tempoForno = 0;
+            ui.barraForno.style.width = '0%';
+            ui.btnForno.disabled = false;
+            ui.btnForno.innerText = "Ligar Forno";
+            ui.pizzaForno.className = 'forno-pizza'; // Remove classes de queimado/dourado
         }
 
         function acionarForno() {
-            if (ui.btnForno.innerText === "Colocar no Forno") {
-                ui.btnForno.innerText = "Retirar Pizza";
-                tempoForno = 0;
-                intervalForno = setInterval(() => {
-                    tempoForno += 2;
-                    ui.barraForno.style.width = tempoForno + '%';
-                    if (tempoForno < 40) ui.barraForno.style.backgroundColor = '#4CAF50';
-                    else if (tempoForno < 70) ui.barraForno.style.backgroundColor = '#ffeb3b';
-                    else ui.barraForno.style.backgroundColor = '#d32f2f';
-                    if (tempoForno >= 100) { clearInterval(intervalForno); finalizarForno(); }
-                }, 100);
-            } else {
-                clearInterval(intervalForno);
-                finalizarForno();
-            }
+            ui.btnForno.disabled = true;
+            ui.btnForno.innerText = "Assando...";
+            
+            intervalForno = setInterval(() => {
+                tempoForno += 2;
+                ui.barraForno.style.width = tempoForno + '%';
+                
+                if (tempoForno < 40) ui.barraForno.style.backgroundColor = '#2ecc71';
+                else if (tempoForno < 70) ui.barraForno.style.backgroundColor = '#f1c40f';
+                else ui.barraForno.style.backgroundColor = '#e74c3c';
+
+                if (tempoForno >= 100) {
+                    clearInterval(intervalForno);
+                    finalizarForno();
+                }
+            }, 100);
         }
 
         function finalizarForno() {
-            ui.btnForno.disabled = true;
-            if (tempoForno >= 40 && tempoForno <= 70) ui.pizzaForno.classList.add('dourada');
-            else if (tempoForno > 70) ui.pizzaForno.classList.add('queimada');
-            setTimeout(() => { mudarEstacao('estacao-corte'); }, 1500);
+            if (tempoForno >= 40 && tempoForno <= 70) {
+                // Ponto certo
+                ui.pizzaForno.style.backgroundColor = '#e67e22'; // Dourada
+                ui.btnForno.innerText = "Pizza Pronta!";
+            } else {
+                // Queimou ou ficou crua
+                ui.pizzaForno.style.backgroundColor = '#333';
+                ui.btnForno.innerText = "Pizza Estragada!";
+            }
+
+            // Vai para a entrega depois de um tempo
+            setTimeout(() => {
+                mudarEstacao('estacao-entrega');
+            }, 2000);
         }
 
-        function entregarPizza() {
+        function proximoCliente() {
             moedas += 10;
             ui.moedas.innerText = moedas;
-            ui.textoPedido.innerText = "Pedido Entregue! +10 Moedas";
-            ui.statusTicket.innerText = "Finalizado!";
             indicePerguntaAtual++;
-            pizzariaAberta = false;
-            ui.btnOpen.style.display = 'block';
-            ui.btnForno.disabled = false;
-            ui.btnForno.innerText = "Colocar no Forno";
-            ui.pizzaForno.className = 'pizza-area';
-            ui.barraForno.style.width = '0%';
-            ui.pizzaMontagem.innerHTML = '';
-            setTimeout(() => { mudarEstacao('estacao-pedido'); }, 2000);
+            mudarEstacao('estacao-pedido');
+            
+            if (indicePerguntaAtual >= listaPerguntasAtual.length) {
+                ui.btnOpen.innerText = "FIM DA FASE";
+            } else {
+                ui.btnOpen.innerText = "ABRIR";
+                ui.btnOpen.style.display = 'block';
+            }
         }
 
         function mudarEstacao(id) {
@@ -386,7 +423,7 @@
             document.getElementById(id).classList.add('ativa');
         }
 
-        // Inicializa o menu ao carregar
+        // Inicialização
         window.onload = criarMenu;
     </script>
 </body>
